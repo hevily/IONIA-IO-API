@@ -1,18 +1,23 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 
-var http = require('http');
-var cors = require('cors');
-var domain = require('express-domain-middleware');
+const http = require('http');
+const cors = require('cors');
+const domain = require('express-domain-middleware');
 
-var index = require('./routes/index');
-var searchApis = require('./routes/ionia-rest/search');
+// api services
+const index = require('./routes/index');
+const searchApis = require('./routes/ionia-rest/search');
+const exchangeApis = require('./routes/ionia-rest/exchange');
+const usersApis = require('./routes/ionia-rest/users');
+const cryptocurrencyApis = require('./routes/ionia-rest/crypto-currency');
 
-var app = express();
+
+const app = express();
 
 // view engine setup
 app.set('port', process.env.PORT || 3000);
@@ -34,10 +39,13 @@ app.use(domain);
 // Routing apis
 app.use('/', index);
 app.use('/api/search', searchApis);
+app.use('/api/users', usersApis);
+app.use('/api/exchange', exchangeApis);
+app.use('/api/cryptoc', cryptocurrencyApis);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+  const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
@@ -51,7 +59,7 @@ app.use(function errorHandler(err, req, res, next) {
   console.log('\n' + err.stack);
   err.message = err.status == 500 ? 'Something bad happened. :(' : err.message;
   if (err.status != 404) {
-      var errordata = 'error status : ' + err.status + ' , error on request :  ' + process.domain.id + req.method + req.url + '   ,   error message : ' + err.message;
+      const errordata = 'error status : ' + err.status + ' , error on request :  ' + process.domain.id + req.method + req.url + '   ,   error message : ' + err.message;
       res.send('Internal Server Error' + err.status);
   }else{
       res.send('page not found Server Error' + err.status);

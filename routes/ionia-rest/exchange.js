@@ -3,7 +3,7 @@ const router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('Search APIS');
+  res.send('Exchange APIS');
 });
 
 module.exports = router;
