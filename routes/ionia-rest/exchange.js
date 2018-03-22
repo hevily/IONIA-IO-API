@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const exchange = require('../../common/exchange/exchange');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('Exchange APIS');
+router.post('/', function(request, response, next) {
+  return exchange.exchangeHandler(request, response);
 });
 
 module.exports = router;
