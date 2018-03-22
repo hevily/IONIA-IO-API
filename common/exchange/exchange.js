@@ -26,7 +26,7 @@ function getBalanceExchanges(request, callback) {
         currencyList.forEach(function(currency) {
             if(bittrexResult[currency]) {
                 result[currency] = bittrexResult[currency];
-                result[currency]['btcValue'] = 0.01;
+                result[currency]['btcValue'] = 0;
             }
         });
     
