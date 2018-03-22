@@ -6,7 +6,7 @@ async function requestHttp(url, method='GET', headers={}, params={}) {
         headers: headers
     }
 
-    const response = {};
+    let response = {};
 
     if(method === 'GET') {
         response = await axios.get(url, options);
