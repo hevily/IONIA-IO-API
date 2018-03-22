@@ -11,7 +11,7 @@ async function requestHttp(url, method='GET', headers={}, params={}) {
     if(method === 'GET') {
         response = await axios.get(url, options);
     }
-    else if(method == 'POST') {
+    else if(method === 'POST') {
         response = await axios.post(url, options);
     }
     else {
