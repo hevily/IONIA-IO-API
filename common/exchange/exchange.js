@@ -1,6 +1,6 @@
 bittrex = require('./bittrex.js');
 
-function getBalanceExchanges(request, response) {
+function getBalanceExchanges(request, callback) {
     // top 150 from coinmarketcap
     var currencyList = [
         'btc', 'eth', 'xrp', 'bch', 'ltc', 'ada', 'eos', 'neo', 'xlm', 'miota', 'xmr', 'dash', 'xem', 'trx', 'usdt',
@@ -19,19 +19,21 @@ function getBalanceExchanges(request, response) {
 
     var API_KEY = '4f4f65118cb14a7e9efa8cc421ca5196';
     var API_SECRET = 'b8c3460146fe415787460cd6174c7288';
-    
-    var result = {};
 
-    bittrexResult = bittrex.getbalances(API_KEY, API_SECRET);
-    
-    currencyList.forEach(function(currency) {
-        if(bittrexResult[currency]) {
-            result[currency] = bittrexResult[currency];
-            result[currency]['btcValue'] = 0.01;
-        }
-    });
+    var callback2 = function(bittrexResult) {
+        var result = {};
 
-    return result;
+        currencyList.forEach(function(currency) {
+            if(bittrexResult[currency]) {
+                result[currency] = bittrexResult[currency];
+                result[currency]['btcValue'] = 0.01;
+            }
+        });
+    
+        callback(result);
+    };
+
+    bittrex.getbalances(API_KEY, API_SECRET, callback2);
 }
 
 exports.getBalanceExchanges = getBalanceExchanges;

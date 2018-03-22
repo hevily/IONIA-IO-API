@@ -8,10 +8,11 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/account/getbalances', function(req, res, next) {
-  var result = account.getbalances(req);
-
-  res.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify(result));
+  var callback = function(result) {
+    res.json(result);
+  };
+  
+  account.getbalances(req, callback);
 });
 
 module.exports = router;
