@@ -10,11 +10,8 @@ const cors = require('cors');
 const domain = require('express-domain-middleware');
 
 // api services
-const index = require('./routes/index');
-const searchApis = require('./routes/ionia-rest/search');
-const exchangeApis = require('./routes/ionia-rest/exchange');
-const usersApis = require('./routes/ionia-rest/users');
-const cryptocurrencyApis = require('./routes/ionia-rest/crypto-currency');
+const routesIndex = require('./routes/index');
+const routesV1 = require('./routes/v1/index');
 
 
 const app = express();
@@ -37,11 +34,8 @@ app.use(domain);
 
 
 // Routing apis
-app.use('/', index);
-app.use('/api/search', searchApis);
-app.use('/api/users', usersApis);
-app.use('/api/exchange', exchangeApis);
-app.use('/api/cryptoc', cryptocurrencyApis);
+app.use('/', routesIndex);
+app.use('/v1', routesV1);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
