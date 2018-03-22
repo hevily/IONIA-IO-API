@@ -28,7 +28,6 @@ function getbalances(API_KEY, API_SECRET) {
                 "balance": balance,
                 "pending": pending,
                 "address" : cryptoAddress,
-                'btcValue': 0.01,
             }
         };
     });
