@@ -3,7 +3,7 @@ function getbalances(request, response) {
         "success": true,
         "message": null,
         "result": {
-            "currecies": {
+            "currencies": {
                 "btc": {
                     "btcValue": 1.00000000,
                     "bittrex": {
