@@ -1,6 +1,7 @@
 bittrex = require('./bittrex.js');
 
 function getBalanceExchanges(request, response) {
+    // top 150 from coinmarketcap
     var currencyList = [
         'btc', 'eth', 'xrp', 'bch', 'ltc', 'ada', 'eos', 'neo', 'xlm', 'miota', 'xmr', 'dash', 'xem', 'trx', 'usdt',
         'etc', 'ven', 'qtum', 'icx', 'lsk', 'omg', 'nano', 'btg', 'bnb', 'zec', 'dgd', 'ppt', 'steem', 'strat', 'xvg',
@@ -32,18 +33,4 @@ function getBalanceExchanges(request, response) {
     return result;
 }
 
-function exchangeHandler(request, response) {
-    exchange = request.body.exchange;
-
-    switch(exchange) {
-        case "bittrex":
-            return bittrex.viewBalance(request, response);
-        // case "bitthumb":
-            // return bitthumb.viewBalance(request, response);
-        default:
-            throw exchange + " is not found!";
-    }
-}
-
 exports.getBalanceExchanges = getBalanceExchanges;
-exports.exchangeHandler = exchangeHandler;
