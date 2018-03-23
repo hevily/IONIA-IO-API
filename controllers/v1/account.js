@@ -1,8 +1,9 @@
 const koaRouter = require('koa-router');
-const bittrex = require('../../app/exchange/bittrex');
+const balances = require('../../app/balances/balances');
 
 const accountRouter = new koaRouter();
 
-accountRouter.get('/getbalances', bittrex.getbalances);
+accountRouter.get('/getbalances', balances.getBalances);
+accountRouter.post('/getbalances', balances.getBalances);
 
 module.exports = accountRouter;
