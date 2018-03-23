@@ -17,6 +17,8 @@ app.use(async(ctx, next) => {
         ctx.body = {
             message: err.message
         };
+
+        console.log(err);
     }
 });
 
