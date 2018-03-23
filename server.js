@@ -1,9 +1,11 @@
 const koa = require('koa');
 const koaRouter = require('koa-router');
+const koaBodyParser = require('koa-bodyparser');
 const routesV1 = require('./routes/v1/index');
 
 const app = new koa();
 const router = new koaRouter();
+const bodyParser = new koaBodyParser();
 
 // error handler (should be bind first)
 app.use(async(ctx, next) => {
@@ -18,8 +20,11 @@ app.use(async(ctx, next) => {
     }
 });
 
+app.use(bodyParser);
+
 router.use('/v1', routesV1.routes());
 app.use(router.routes());
+
 
 const PORT = 3000;
 
