@@ -4,3 +4,5 @@ function sha512(key, data) {
     const hasher = sha512.hmac(key);
     return hasher.finalize(data).toString('hex');
 }
+
+exports.sha512 = sha512;
