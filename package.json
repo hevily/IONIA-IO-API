@@ -8,7 +8,8 @@
     "axios": "^0.18.0",
     "koa": "^2.5.0",
     "koa-bodyparser": "^4.2.0",
-    "koa-router": "^7.4.0"
+    "koa-router": "^7.4.0",
+    "sha512": "0.0.1"
   },
   "devDependencies": {},
   "scripts": {
