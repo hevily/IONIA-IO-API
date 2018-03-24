@@ -1,7 +1,7 @@
 const axios = require('axios');
 const querystring = require('querystring');
 
-async function requestHttp(url, method='GET', headers={}, dataOrParams={}) {
+async function request(url, method='GET', headers={}, dataOrParams={}) {
     headers['Connection'] = 'keep-alive';
     headers['Content-Type'] = 'application/x-www-form-urlencoded';
     headers['Accept'] = '*/*';
@@ -34,4 +34,4 @@ async function requestHttp(url, method='GET', headers={}, dataOrParams={}) {
     return response;
 }
 
-exports.requestHttp = requestHttp;
+exports.request = request;

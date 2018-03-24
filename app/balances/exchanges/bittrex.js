@@ -8,7 +8,7 @@ async function getBalances(data) {
         apisign: crypto.sha512(data.bittrex.secretKey, url)
     }
 
-    const response = await http.requestHttp(url, 'GET', headers);
+    const response = await http.request(url, 'GET', headers);
 
     return response.success === true ? makeResult(response.result) : {};
 }
