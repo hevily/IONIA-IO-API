@@ -3,8 +3,6 @@ const querystring = require('querystring');
 
 async function request(url, method='GET', headers={}, dataOrParams={}) {
     headers['Connection'] = 'keep-alive';
-    headers['Content-Type'] = 'application/x-www-form-urlencoded';
-    headers['Accept'] = '*/*';
 
     const requestOptions = {
         method: method,
