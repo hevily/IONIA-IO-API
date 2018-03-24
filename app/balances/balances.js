@@ -6,8 +6,8 @@ async function getBalances(ctx, next) {
     // TODO: 계정으로 DB에서 거래소 정보(apikey, secretkey ...) 조회
     const testData = {
         bittrex: {
-            apiKey: '4f4f65118cb14a7e9efa8cc421ca5196',
-            secretKey: 'b8c3460146fe415787460cd6174c7288'
+            apiKey: '',
+            secretKey: ''
         }
     };
 
@@ -30,7 +30,7 @@ function makeResponse(exchangeResults) {
 
         for(const tokenName in exchange) {
             if(response.tokenName === undefined) {
-                response[tokenName] = {}
+                response[tokenName] = {};
             }
             
             response[tokenName][exchangeName] = exchange[tokenName];
