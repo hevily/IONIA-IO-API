@@ -11,9 +11,14 @@ const bodyParser = new koaBodyParser();
 app.use(async(ctx, next) => {
     try {
         await next();
-
+        
+        if(ctx.body === undefined) {
+            throw {
+                message: 'Unknown Service.'
+            }
+        }
+        
         ctx.body.success = true;
-        ctx.body.message = null;
     } catch (err) {
         // will only respond with JSON
         ctx.status = err.statusCode || err.status || 500;
