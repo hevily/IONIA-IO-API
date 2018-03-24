@@ -20,7 +20,7 @@ async function request(url, method='GET', headers={}, dataOrParams={}) {
         throw 'HTTP Method ' + method + ' is Not found!';
     }
 
-    let response;
+    let response = {};
 
     try {
         response = await axios(requestOptions);
