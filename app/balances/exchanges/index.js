@@ -1,2 +1,2 @@
 exports.bittrex = require('./bittrex');
-// exports.korbit = require('./korbit');
+exports.poloniex = require('./poloniex');

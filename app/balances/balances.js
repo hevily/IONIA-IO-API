@@ -8,7 +8,11 @@ async function getBalances(ctx, next) {
         bittrex: {
             apiKey: '',
             secretKey: ''
-        }
+        },
+        poloniex: {
+            apiKey: '',
+            secretKey: ''
+        },
     };
 
     const exchangeFunctions = [];
