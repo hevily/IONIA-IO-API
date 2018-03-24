@@ -11,10 +11,14 @@ const bodyParser = new koaBodyParser();
 app.use(async(ctx, next) => {
     try {
         await next();
+
+        ctx.body.success = true;
+        ctx.body.message = null;
     } catch (err) {
         // will only respond with JSON
         ctx.status = err.statusCode || err.status || 500;
         ctx.body = {
+            success: false,
             message: err.message
         };
 
