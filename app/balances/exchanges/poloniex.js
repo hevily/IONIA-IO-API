@@ -1,5 +1,5 @@
-const http = require('../../common/module/http');
-const crypto = require('../../common/module/crypto');
+const http = require('../../../ionia_modules/http');
+const crypto = require('../../../ionia_modules/crypto');
 
 const url = 'https://poloniex.com/tradingApi';
 
