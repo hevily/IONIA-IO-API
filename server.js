@@ -1,5 +1,4 @@
 const koa = require('koa');
-const koaRouter = require('koa-router');
 const koaBodyParser = require('koa-bodyparser');
 const koaJsonRpc = require('koa-jsonrpc');
 
