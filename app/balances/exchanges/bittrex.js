@@ -6,7 +6,7 @@ async function getBalances(data) {
     const url = `https://bittrex.com/api/v1.1/account/getbalances?apikey=${data.bittrex.apiKey}&nonce=${nonce}`;
     const headers = {
         apisign: crypto.sha512(data.bittrex.secretKey, url)
-    }
+    };
 
     const response = await http.request(url, 'GET', headers);
 
