@@ -12,6 +12,10 @@ async function getBalances(ctx, next) {
         poloniex: {
             apiKey: '',
             secretKey: ''
+        },
+        livecoin: {
+            apiKey: '',
+            secretKey: ''
         }
     };
 
