@@ -12,7 +12,7 @@ async function getBalances(ctx, next) {
         poloniex: {
             apiKey: '',
             secretKey: ''
-        },
+        }
     };
 
     const exchangeFunctions = [];
@@ -33,7 +33,7 @@ function makeResponse(exchangeResults) {
         const exchange = exchangeResults[i][exchangeName];
 
         for(const tokenName in exchange) {
-            if(response.tokenName === undefined) {
+            if(response[tokenName] === undefined) {
                 response[tokenName] = {};
             }
             
