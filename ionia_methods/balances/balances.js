@@ -18,6 +18,10 @@ async function getbalances(params) {
         bitthumb: {
             apiKey: '',
             secretKey: ''
+        },
+        coinone: {
+            apiKey: '',
+            secretKey: ''
         }
     };
     

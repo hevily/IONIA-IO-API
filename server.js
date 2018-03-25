@@ -1,10 +1,8 @@
 const koa = require('koa');
-const koaJsonRpc = require('koa-jsonrpc');
-
-const getbalances = require('./app/balances/balances').getbalances;
+const jsonRpc = require('./methods');
+const getbalances = require('./ionia_methods/balances/balances').getbalances;
 
 const app = new koa();
-const jsonRpc = koaJsonRpc();
 
 // error handler (should be bind first)
 app.use(async(ctx, next) => {
@@ -27,9 +25,6 @@ app.use(async(ctx, next) => {
     }
 });
 
-
-// methods
-jsonRpc.use('getbalances', getbalances);
 app.use(jsonRpc.app());
 
 const PORT = 3000;
