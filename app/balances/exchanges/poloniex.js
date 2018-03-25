@@ -8,7 +8,7 @@ async function getBalances(data) {
     const balances = await requestToPoloniex(data, 'returnBalances');
     const depositAddresses = await requestToPoloniex(data, 'returnDepositAddresses');
 
-    return balances.error === undefined && depositAddresses.error === undefined ? makeResponse(balances, depositAddresses) : {};
+    return balances.error === undefined && depositAddresses.error === undefined ? makeResult(balances, depositAddresses) : {};
 }
 
 async function requestToPoloniex(data, method) {
@@ -27,7 +27,7 @@ async function requestToPoloniex(data, method) {
     return response;
 }
 
-function makeResponse(balances, depositAddresses) {
+function makeResult(balances, depositAddresses) {
     const result = {};
     const poloniexObject = result['poloniex'] = {};
 
