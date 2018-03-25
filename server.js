@@ -4,7 +4,6 @@ const koaJsonRpc = require('koa-jsonrpc');
 const getbalances = require('./app/balances/balances').getbalances;
 
 const app = new koa();
-const router = new koaRouter();
 const jsonRpc = koaJsonRpc();
 
 // error handler (should be bind first)
