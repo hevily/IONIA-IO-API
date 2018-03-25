@@ -1,7 +1,7 @@
 const http = require('../../common/module/http');
 const crypto = require('../../common/module/crypto');
 
-async function getBalances(data) {
+async function getbalances(data) {
     const nonce = new Date().getTime();
     const url = `https://bittrex.com/api/v1.1/account/getbalances?apikey=${data.bittrex.apiKey}&nonce=${nonce}`;
     const headers = {
@@ -32,4 +32,4 @@ function makeResult(bittrexResult) {
     return result;
 }
 
-exports.getBalances = getBalances;
+exports.getbalances = getbalances;

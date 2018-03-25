@@ -3,7 +3,7 @@ const crypto = require('../../common/module/crypto');
 
 const url = 'https://api.livecoin.net/payment/balances';
 
-async function getBalances(data) {
+async function getbalances(data) {
     
     const headers = {
         'Api-Key': data.livecoin.apiKey,
@@ -64,4 +64,4 @@ function sortObjectByKey(requestBody) {
     return sortedObject;
 }
 
-exports.getBalances = getBalances;
+exports.getbalances = getbalances;

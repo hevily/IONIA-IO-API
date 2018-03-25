@@ -1,8 +1,6 @@
 const exchanges = require('./exchanges');
 
-async function getBalances(ctx, next) {
-    const request = ctx.request.query;
-
+async function getbalances(params) {
     // TODO: 계정으로 DB에서 거래소 정보(apikey, secretkey ...) 조회
     const testData = {
         bittrex: {
@@ -18,15 +16,16 @@ async function getBalances(ctx, next) {
             secretKey: ''
         }
     };
-
+    
     const exchangeFunctions = [];
-
+    
     for(const exchange in exchanges) {
-        exchangeFunctions.push(exchanges[exchange].getBalances(testData));
+        exchangeFunctions.push(exchanges[exchange].getbalances(testData));
     }
     
     const exchangeResults = await Promise.all(exchangeFunctions);
-    ctx.body = makeResponse(exchangeResults);
+
+    return makeResponse(exchangeResults);
 }
 
 function makeResponse(exchangeResults) {
@@ -48,4 +47,4 @@ function makeResponse(exchangeResults) {
     return response;
 }
 
-exports.getBalances = getBalances;
+exports.getbalances = getbalances;

@@ -3,7 +3,7 @@ const crypto = require('../../common/module/crypto');
 
 const url = 'https://poloniex.com/tradingApi';
 
-async function getBalances(data) {
+async function getbalances(data) {
     // nonce 이슈로 병렬처리 불가능
     const balances = await requestToPoloniex(data, 'returnBalances');
     const depositAddresses = await requestToPoloniex(data, 'returnDepositAddresses');
@@ -43,4 +43,4 @@ function makeResult(balances, depositAddresses) {
     return result;
 }
 
-exports.getBalances = getBalances;
+exports.getbalances = getbalances;
