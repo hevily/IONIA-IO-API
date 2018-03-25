@@ -1,5 +1,4 @@
 const koa = require('koa');
-const koaBodyParser = require('koa-bodyparser');
 const koaJsonRpc = require('koa-jsonrpc');
 
 const getbalances = require('./app/balances/balances').getbalances;
