@@ -1,11 +1,13 @@
 const koa = require('koa');
 const koaRouter = require('koa-router');
 const koaBodyParser = require('koa-bodyparser');
-const routesV1 = require('./routes/v1/index');
+const koaJsonRpc = require('koa-jsonrpc');
+
+const getbalances = require('./app/balances/balances').getbalances;
 
 const app = new koa();
 const router = new koaRouter();
-const bodyParser = new koaBodyParser();
+const jsonRpc = koaJsonRpc();
 
 // error handler (should be bind first)
 app.use(async(ctx, next) => {
@@ -17,13 +19,10 @@ app.use(async(ctx, next) => {
                 message: 'Unknown Service.'
             }
         }
-        
-        ctx.body.success = true;
     } catch (err) {
         // will only respond with JSON
         ctx.status = err.statusCode || err.status || 500;
         ctx.body = {
-            success: false,
             message: err.message
         };
 
@@ -31,11 +30,10 @@ app.use(async(ctx, next) => {
     }
 });
 
-app.use(bodyParser);
 
-router.use('/v1', routesV1.routes());
-app.use(router.routes());
-
+// methods
+jsonRpc.use('getbalances', getbalances);
+app.use(jsonRpc.app());
 
 const PORT = 3000;
 
