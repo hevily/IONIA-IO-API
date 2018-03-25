@@ -14,6 +14,10 @@ async function getbalances(params) {
         livecoin: {
             apiKey: '',
             secretKey: ''
+        },
+        bitthumb: {
+            apiKey: '',
+            secretKey: ''
         }
     };
     
