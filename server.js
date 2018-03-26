@@ -3,7 +3,6 @@ const bodyParser = require('koa-bodyparser');
 const methods = require('./methods');
 const fs    = require('fs')
 const Router = require('koa-router');
-const bodyParser = require('koa-bodyparser')
 const jsonRpc = require('./methods');
 const getbalances = require('./ionia_methods/balances/balances').getbalances;
 
