@@ -1,10 +1,7 @@
-const koaJsonRpc = require('koa-jsonrpc');
+const jsonRpc = require('./ionia_modules/jsonRpc');
 const getbalances = require('./ionia_methods/balances/balances').getbalances;
 
-
-const jsonRpc = koaJsonRpc();
-
 // methods
-jsonRpc.use('getbalances', getbalances);
+jsonRpc.registMethod('getbalances', getbalances);
 
 module.exports = jsonRpc;

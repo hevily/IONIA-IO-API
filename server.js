@@ -1,5 +1,6 @@
 const koa = require('koa');
-const jsonRpc = require('./methods');
+const bodyParser = require('koa-bodyparser');
+const methods = require('./methods');
 const getbalances = require('./ionia_methods/balances/balances').getbalances;
 
 const app = new koa();
@@ -8,12 +9,6 @@ const app = new koa();
 app.use(async(ctx, next) => {
     try {
         await next();
-        
-        if(ctx.body === undefined) {
-            throw {
-                message: 'Unknown Service.'
-            }
-        }
     } catch (err) {
         // will only respond with JSON
         ctx.status = err.statusCode || err.status || 500;
@@ -25,7 +20,13 @@ app.use(async(ctx, next) => {
     }
 });
 
-app.use(jsonRpc.app());
+app.use(bodyParser({
+    extendTypes: {
+        json: ['application/json-rpc']
+    }
+}));
+
+app.use(methods.app());
 
 const PORT = 3000;
 
