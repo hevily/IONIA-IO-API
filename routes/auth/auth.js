@@ -8,11 +8,18 @@ authRouteObject.setPassport = function(passport) {
 }
 
 auth.post('/login', async (ctx, next) => {
+
+  // ctx.mongo.collection('user').findOne({'email':ctx.request.body.email, 'password': ctx.request.body.password}, function(err, result){
+  //   console.log(result);
+  // })
+
+
   return authRouteObject.passport.authenticate('local', (err, user) => {
     if (user) {
       ctx.login(user);
       ctx.redirect('/app');
     } else {
+      console.log('here ??', err);
       ctx.redirect('/');
     }
   })(ctx);
@@ -24,8 +31,6 @@ auth.get('/logout', function(ctx) {
 })
 
 auth.post('/register', function(ctx) {
-  console.log(ctx.mongo);
-  ctx.type = 'json'
   ctx.body = ctx.request.body
 })
 

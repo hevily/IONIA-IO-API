@@ -5,25 +5,25 @@ const Router = require('koa-router');
 const jsonRpc = require('./methods');
 const getbalances = require('./ionia_methods/balances/balances').getbalances;
 
-require('./ionia-auth/ionia-auth');
-const passport = require('koa-passport')
-const session = require('koa-session')
+// mongodb Setting
+const koaIoniaMongo = require("./mongo");
 
-// const app = new koa();
 const app2 = new koa();
 const app = new koa();
 
 const router = new Router();
 
-// mongodb Setting
-const koaIoniaMongo = require("./mongo");
+require('./ionia-auth/ionia-auth');
+const passport = require('koa-passport')
+const session = require('koa-session')
 
-app2.keys = ['your-session-secret'];
+app2.keys = ['secret'];
 app2.use(session({}, app2))
 app2.use(passport.initialize())
 app2.use(passport.session())
 app2.use(bodyParser())
 app2.use(koaIoniaMongo());
+
 
 
 // error handler (should be bind first)
@@ -67,27 +67,6 @@ app2.use(async(ctx, next) => {
     }
 });
 
-
-app2.use(async(ctx, next) => {
-    try {
-        await next();
-        
-        if(ctx.body === undefined) {
-            throw {
-                message: 'Unknown Service.'
-            }
-        }
-    } catch (err) {
-        // will only respond with JSON
-        ctx.status = err.statusCode || err.status || 500;
-        ctx.body = {
-            message: err.message
-        };
-
-        console.log(err);
-    }
-});
-
 router.get('/', function(ctx) {
     ctx.type = 'html'
     ctx.body = fs.createReadStream('views/login.html')
@@ -102,7 +81,6 @@ router.get('/register', function(ctx) {
     ctx.type = 'html'
     ctx.body = fs.createReadStream('views/signup.html')
 })
-
 
 const authRoute = require('./routes/auth/auth');
 authRoute.setPassport(passport)

@@ -11,7 +11,7 @@ const fetchUser = (() => {
 passport.serializeUser(function(user, done) {
   done(null, user.id)
 })
- 
+
 passport.deserializeUser(async function(id, done) {
   try {
     const user = await fetchUser()
@@ -22,18 +22,21 @@ passport.deserializeUser(async function(id, done) {
 })
 
 const LocalStrategy = require('passport-local').Strategy
-
-passport.use(new LocalStrategy(function(email, password, done) {
-  fetchUser()
-    .then(user => {
-      if (email === user.email && password === user.password) {
-        console.log('ionia-auth : ', user);
-        done(null, user)
-      } else {
-        done(null, false)
-      }
-    })
-    .catch(err => { console.log(err); done(err);})
+passport.use(new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password',
+    passReqToCallback: true
+  },function(ctx, email, password, done) {
+    fetchUser()
+      .then(user => {
+        if (email === user.email && password === user.password) {
+          console.log('ionia-auth : ', user);
+          done(null, user)
+        } else {
+          done(null, false)
+        }
+      })
+      .catch(err => { console.log(err); done(err);})
 }))
 
 const FacebookStrategy = require('passport-facebook').Strategy
