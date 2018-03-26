@@ -1,6 +1,5 @@
 const koa = require('koa');
 const bodyParser = require('koa-bodyparser');
-const methods = require('./methods');
 const fs    = require('fs')
 const Router = require('koa-router');
 const jsonRpc = require('./methods');
@@ -44,7 +43,26 @@ app.use(bodyParser({
     }
 }));
 
-app.use(methods.app());
+app2.use(async(ctx, next) => {
+    try {
+        await next();
+        
+        if(ctx.body === undefined) {
+            throw {
+                message: 'Unknown Service.'
+            }
+        }
+    } catch (err) {
+        // will only respond with JSON
+        ctx.status = err.statusCode || err.status || 500;
+        ctx.body = {
+            message: err.message
+        };
+
+        console.log(err);
+    }
+});
+
 
 app2.use(async(ctx, next) => {
     try {
