@@ -12,7 +12,6 @@ auth.post('/login', async (ctx, next) => {
     if (user) {
       ctx.login(user);
       ctx.redirect('/app');
-      // ctx.body = 'kakakakaka success!!';
     } else {
       ctx.redirect('/');
     }
@@ -25,6 +24,7 @@ auth.get('/logout', function(ctx) {
 })
 
 auth.post('/register', function(ctx) {
+  console.log(ctx.mongo);
   ctx.type = 'json'
   ctx.body = ctx.request.body
 })

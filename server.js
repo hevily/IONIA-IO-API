@@ -15,11 +15,15 @@ const app = new koa();
 
 const router = new Router();
 
+// mongodb Setting
+const koaIoniaMongo = require("./mongo");
+
 app2.keys = ['your-session-secret'];
 app2.use(session({}, app2))
 app2.use(passport.initialize())
 app2.use(passport.session())
 app2.use(bodyParser())
+app2.use(koaIoniaMongo());
 
 
 // error handler (should be bind first)
