@@ -6,9 +6,6 @@ const session = require('koa-session')
 module.exports = passport;
 const jsonRpc = require('./methods');
 
-// mongodb Setting
-// const koaIoniaMongo = require("./mongo");
-
 require('./mongo/users/index');
 
 const app = new koa();

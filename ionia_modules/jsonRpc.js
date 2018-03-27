@@ -36,6 +36,7 @@ class JsonRpc {
             try {
                 if(['register', 'login', 'logout'].indexOf(requestBody.method) > -1) {
                     response.result = await method(ctx, requestBody.params);
+                    console.log(response.result);
                 }
                 else {
                     response.result = await method(requestBody.params);
