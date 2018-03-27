@@ -1,38 +1,26 @@
 const PRIVACY = require('./../../privacy.json');
 
-async function bitcoin(params) {
-  console.log(params);
+async function bitcoin(params, callback) {
   const kapitalize = require('kapitalize')({
     host: PRIVACY.BLOCKCHAINS.BITCOIN.IP,
     port: PRIVACY.BLOCKCHAINS.BITCOIN.PORT,
     user: PRIVACY.BLOCKCHAINS.BITCOIN.USERNAME,
     pass: PRIVACY.BLOCKCHAINS.BITCOIN.PASSWORD
   })
-
-  console.log(kapitalize);
-
+  let result;
   if (params.do === 'send') {
-    await send(params)
+    result = await send(params, kapitalize)
   } else if (params.do === 'createaddress') {
-    await createAddress()
+    kapitalize.exec('getNewAddress', function(err, address) {
+      console.log(address);
+    });
+  } else if (params.do === 'searchTransaction'){
+    result = await searchTransaction(params, kapitalize)
   } else {
-    await searchTransaction(params)
+    // get balance
+    result = await getBalance(params, kapitalize)
   }
-  return true;
-  
-}
-
-
-function send() {
-
-}
-
-function searchTransaction() {
-
-}
-
-function createAddress() {
-
+  return result;
 }
 
 exports.bitcoin = bitcoin;
