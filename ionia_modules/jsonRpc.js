@@ -34,7 +34,12 @@ class JsonRpc {
             }
 
             try {
-                response.result = await method(requestBody.params);
+                if(['register', 'login', 'logout'].indexOf(requestBody.method) > -1) {
+                    response.result = await method(ctx, requestBody.params);
+                }
+                else {
+                    response.result = await method(requestBody.params);
+                }
             }catch(error) {
                 this.handleError(error, ctx.request.header, requestBody);
                 response.error = jsonRpcError.InternalError;

@@ -1,99 +1,33 @@
 const koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const fs    = require('fs')
-const Router = require('koa-router');
+const passport = require('koa-passport')
+const session = require('koa-session')
+module.exports = passport;
 const jsonRpc = require('./methods');
-const getbalances = require('./ionia_methods/balances/balances').getbalances;
 
 // mongodb Setting
 // const koaIoniaMongo = require("./mongo");
 
 require('./mongo/users/index');
 
-const app2 = new koa();
 const app = new koa();
 
-const router = new Router();
+require('./ionia_modules/auth');
 
-require('./ionia-auth/ionia-auth');
-const passport = require('koa-passport')
-const session = require('koa-session')
-
-app2.keys = ['secret'];
-app2.use(session({}, app2))
-app2.use(passport.initialize())
-app2.use(passport.session())
-app2.use(bodyParser())
-// app2.use(koaIoniaMongo());
-
-
-
-// error handler (should be bind first)
-app.use(async(ctx, next) => {
-    try {
-        await next();
-    } catch (err) {
-        // will only respond with JSON
-        ctx.status = err.statusCode || err.status || 500;
-        ctx.body = {
-            message: err.message
-        };
-
-        console.log(err);
-    }
-});
+app.keys = ['secret'];
+app.use(session({}, app));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(bodyParser({
     extendTypes: {
-        json: ['application/json-rpc']
-    }
+        json: ['application/json-rpc'] // will parse application/x-javascript type body as a JSON string 
+      }
 }));
 
-app2.use(async(ctx, next) => {
-    try {
-        await next();
-        
-        if(ctx.body === undefined) {
-            throw {
-                message: 'Unknown Service.'
-            }
-        }
-    } catch (err) {
-        // will only respond with JSON
-        ctx.status = err.statusCode || err.status || 500;
-        ctx.body = {
-            message: err.message
-        };
-
-        console.log(err);
-    }
-});
-
-router.get('/', function(ctx) {
-    ctx.type = 'html'
-    ctx.body = fs.createReadStream('views/login.html')
-})
-
-router.get('/app', function(ctx) {
-    ctx.type = 'html'
-    ctx.body = fs.createReadStream('views/app.html')
-})
-
-router.get('/register', function(ctx) {
-    ctx.type = 'html'
-    ctx.body = fs.createReadStream('views/signup.html')
-})
-
-const authRoute = require('./routes/auth/auth');
-authRoute.setPassport(passport)
-
-router.use('/auth', authRoute.auth.routes()); 
-app2.use(router.routes()).use(router.allowedMethods());
-app2.listen(4000, () => {
-    console.log('http rest server is listening to port 4000');
-});
-
 app.use(jsonRpc.app());
+
 const PORT = 3000;
 app.listen(PORT);
 console.log(`Ionia API server running at ${PORT}`);
