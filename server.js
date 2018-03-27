@@ -6,7 +6,9 @@ const jsonRpc = require('./methods');
 const getbalances = require('./ionia_methods/balances/balances').getbalances;
 
 // mongodb Setting
-const koaIoniaMongo = require("./mongo");
+// const koaIoniaMongo = require("./mongo");
+
+require('./mongo/users/index');
 
 const app2 = new koa();
 const app = new koa();
@@ -22,7 +24,7 @@ app2.use(session({}, app2))
 app2.use(passport.initialize())
 app2.use(passport.session())
 app2.use(bodyParser())
-app2.use(koaIoniaMongo());
+// app2.use(koaIoniaMongo());
 
 
 

@@ -1,25 +1,51 @@
 const passport = require('koa-passport')
+const mongo = require('mongoose')
 
-const fetchUser = (() => {
-  // This is an example! Use password hashing in your project and avoid storing passwords in your code
-  const user = { id: 1, email: 'arnold.yoo@findexchain.com', password: '1' }
-  return async function() {
-    return user
-  }
-})()
+// const fetchUser = (() => {
+//   // This is an example! Use password hashing in your project and avoid storing passwords in your code
+//   const user = { id: 1, email: 'arnold.yoo@findexchain.com', password: '1' }
+//   return async function() {
+//     return user
+//   }
+// })()
 
+// passport.serializeUser(function(user, done) {
+//   done(null, user.id)
+// })
+
+// passport.deserializeUser(async function(id, done) {
+//   try {
+//     const user = await fetchUser()
+//     done(null, user)
+//   } catch(err) {
+//     done(err)
+//   }
+// })
+
+
+//
+// User serialization
+//
 passport.serializeUser(function(user, done) {
-  done(null, user.id)
-})
+  console.log('\n\n\nSerializing: %s\n\n\n\n', user);
+  done(null, user._id);
+});
 
-passport.deserializeUser(async function(id, done) {
-  try {
-    const user = await fetchUser()
-    done(null, user)
-  } catch(err) {
-    done(err)
-  }
-})
+//
+// User deserialization
+//
+passport.deserializeUser(function(id, done) {
+  console.log('\nDeserializing: %s\n\n', id);
+  const User = mongo.model('User');
+  User.findOne({ _id: id }, function (err, user) {
+      if (err) {
+          console.log('ERR: ', err);
+          done(err);
+      } else {
+          done(null, user);
+      }
+  });
+});
 
 const LocalStrategy = require('passport-local').Strategy
 passport.use(new LocalStrategy({
@@ -27,17 +53,27 @@ passport.use(new LocalStrategy({
     passwordField: 'password',
     passReqToCallback: true
   },function(ctx, email, password, done) {
-    fetchUser()
-      .then(user => {
+    const User = mongo.model('User');
+    User.findOne({ 'email': email }, function (err, profile) {
+        // error checking on lookup
+        const user = profile;
+        console.log(user);
+        if (err) {
+            console.log('ERR: ', err);
+            done(err);
+            return;
+        }
+
         if (email === user.email && password === user.password) {
           console.log('ionia-auth : ', user);
+          user.password = undefined;
           done(null, user)
         } else {
           done(null, false)
         }
-      })
-      .catch(err => { console.log(err); done(err);})
-}))
+    });
+  })
+)
 
 const FacebookStrategy = require('passport-facebook').Strategy
 passport.use(new FacebookStrategy({
