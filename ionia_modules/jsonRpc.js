@@ -40,6 +40,10 @@ class JsonRpc {
                 else {
                     response.result = await method(requestBody.params);
                 }
+
+                if(response.result === undefined) {
+                    response.result = null;
+                }
             }catch(error) {
                 this.handleError(error, ctx.request.header, requestBody);
                 response.error = jsonRpcError.InternalError;
