@@ -5,7 +5,7 @@ const passport = require('koa-passport')
 const session = require('koa-session')
 module.exports = passport;
 const jsonRpc = require('./methods');
-require('./mongo/users/index');
+require('./mongo/index');
 
 const app = new koa();
 require('./ionia_modules/auth');
