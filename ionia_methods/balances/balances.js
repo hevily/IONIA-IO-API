@@ -22,7 +22,11 @@ async function getbalances(params) {
         coinone: {
             apiKey: '',
             secretKey: ''
-        }
+        },
+        binance: {
+            apiKey: '',
+            secretKey: ''
+        },
     };
     
     const exchangeFunctions = [];
