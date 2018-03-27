@@ -1,27 +1,6 @@
 const passport = require('koa-passport')
 const mongo = require('mongoose')
-
-// const fetchUser = (() => {
-//   // This is an example! Use password hashing in your project and avoid storing passwords in your code
-//   const user = { id: 1, email: 'arnold.yoo@findexchain.com', password: '1' }
-//   return async function() {
-//     return user
-//   }
-// })()
-
-// passport.serializeUser(function(user, done) {
-//   done(null, user.id)
-// })
-
-// passport.deserializeUser(async function(id, done) {
-//   try {
-//     const user = await fetchUser()
-//     done(null, user)
-//   } catch(err) {
-//     done(err)
-//   }
-// })
-
+const bcrypt = require('bcrypt');
 
 //
 // User serialization
@@ -54,22 +33,31 @@ passport.use(new LocalStrategy({
     passReqToCallback: true
   },function(ctx, email, password, done) {
     const User = mongo.model('User');
+    console.log(email, password);
     User.findOne({ 'email': email }, function (err, profile) {
-        // error checking on lookup
         const user = profile;
-        console.log(user);
         if (err) {
-            console.log('ERR: ', err);
-            done(err);
-            return;
+          console.log(500 + 'Some error occur');
+          done(err);
+          return;
+        }
+        if (!user) {
+          console.log(400 + 'User not find');
+          done(null, false);
+          return;
         }
 
-        if (email === user.email && password === user.password) {
-          console.log('ionia-auth : ', user);
+        // verify password
+        if (!bcrypt.compareSync(password, user.password)) {
+          console.log('\n\nFound UNauthenticated user ( Password ): %s', user);
+          done(null, false);
+        } else if (email !== user.email) {
+          console.log('\n\nFound UNauthenticated user ( Email ): %s', user);
+          done(null, false);
+        }else {
+          console.log('ionia-user : ', user);
           user.password = undefined;
           done(null, user)
-        } else {
-          done(null, false)
         }
     });
   })

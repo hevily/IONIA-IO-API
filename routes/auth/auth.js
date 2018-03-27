@@ -1,6 +1,9 @@
 const Router = require('koa-router');
+const mongo = require('mongoose')
+const bcrypt = require('bcrypt');
 const authRouteObject = {};
 const auth = new Router();
+const salt = 10;
 authRouteObject.passport = undefined;
 
 authRouteObject.setPassport = function(passport) {
@@ -8,12 +11,6 @@ authRouteObject.setPassport = function(passport) {
 }
 
 auth.post('/login', async (ctx, next) => {
-
-  // ctx.mongo.collection('user').findOne({'email':ctx.request.body.email, 'password': ctx.request.body.password}, function(err, result){
-  //   console.log(result);
-  // })
-
-
   return authRouteObject.passport.authenticate('local', (err, user) => {
     if (user) {
       ctx.login(user);
@@ -31,7 +28,29 @@ auth.get('/logout', function(ctx) {
 })
 
 auth.post('/register', function(ctx) {
-  ctx.body = ctx.request.body
+  const params = ctx.request.body
+  if (!params.email) {
+    console.log(400+' : email required')
+    return;
+  }
+
+  if (!params.password) {
+    console.log(400+' : password required')
+    return;
+  }
+
+  const User = mongo.model('User');
+  const newUser = User.create({
+      email: params.email,
+      password: bcrypt.hashSync(params.password, salt)
+  });
+
+  if (!newUser) {
+    ctx.throw (409, 'The email has all ready been registered.');
+    return;
+  }
+
+  ctx.redirect('/');
 })
 
 authRouteObject.auth = auth;
