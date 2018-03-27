@@ -11,9 +11,7 @@ async function bitcoin(params, callback) {
   if (params.do === 'send') {
     result = await send(params, kapitalize)
   } else if (params.do === 'createaddress') {
-    kapitalize.exec('getNewAddress', function(err, address) {
-      console.log(address);
-    });
+    result = await createAddress(kapitalize);
   } else if (params.do === 'searchTransaction'){
     result = await searchTransaction(params, kapitalize)
   } else {
@@ -21,6 +19,19 @@ async function bitcoin(params, callback) {
     result = await getBalance(params, kapitalize)
   }
   return result;
+  
+}
+
+function createAddress(kap) {
+  return new Promise((resolve, reject) => {
+    kap.exec('getNewAddress', function(err, address) {
+      if(err) {
+        reject(err);
+      } else {
+        resolve(address);
+      }
+    });
+  })
 }
 
 exports.bitcoin = bitcoin;
