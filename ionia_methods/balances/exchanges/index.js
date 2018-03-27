@@ -4,3 +4,4 @@ exports.livecoin = require('./livecoin');
 exports.bitthumb = require('./bitthumb');
 exports.coinone = require('./coinone');
 exports.binance = require('./binance');
+exports.bitfinex = require('./bitfinex');

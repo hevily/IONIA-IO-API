@@ -27,6 +27,10 @@ async function getbalances(params) {
             apiKey: '',
             secretKey: ''
         },
+        bitfinex: {
+            apiKey: '',
+            secretKey: ''
+        }
     };
     
     const exchangeFunctions = [];
