@@ -5,3 +5,6 @@ exports.bitthumb = require('./bitthumb');
 exports.coinone = require('./coinone');
 exports.binance = require('./binance');
 exports.bitfinex = require('./bitfinex');
+// exports.huobi = require('./huobi');
+// exports.kucoin = require('./kucoin');
+exports.yobit = require('./yobit');
