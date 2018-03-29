@@ -1,5 +1,6 @@
 const exchanges = require('./exchanges');
 
+
 async function getbalances(params) {
     // TODO: 계정으로 DB에서 거래소 정보(apikey, secretkey ...) 조회
     const testData = {
@@ -20,6 +21,27 @@ async function getbalances(params) {
             secretKey: ''
         },
         coinone: {
+            apiKey: '',
+            secretKey: ''
+        },
+        binance: {
+            apiKey: '',
+            secretKey: ''
+        },
+        bitfinex: {
+            apiKey: '',
+            secretKey: ''
+        },
+        huobi: {
+            userId: '',
+            apiKey: '',
+            secretKey: ''
+        },
+        kucoin: {
+            apiKey: '',
+            secretKey: ''
+        },
+        yobit: {
             apiKey: '',
             secretKey: ''
         }
