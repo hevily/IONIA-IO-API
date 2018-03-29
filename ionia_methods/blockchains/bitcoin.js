@@ -1,7 +1,7 @@
 const PRIVACY = require('./../../privacy.json');
 
 async function bitcoin(params, callback) {
-  const kapitalize = require('kapitalize')({
+  const kapitalize = require('./../../ionia_modules/kapitalize/kapitalize')({
     host: PRIVACY.BLOCKCHAINS.BITCOIN.IP,
     port: PRIVACY.BLOCKCHAINS.BITCOIN.PORT,
     user: PRIVACY.BLOCKCHAINS.BITCOIN.USERNAME,
