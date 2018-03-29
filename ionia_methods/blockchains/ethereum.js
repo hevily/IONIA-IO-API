@@ -10,16 +10,15 @@ async function ethereum(params) {
     web3 = new Web3(web3.currentProvider);
   } else {
     web3 = new Web3(new Web3.providers.HttpProvider(mainnet));
-    
   }
 
-  let tempObj;
+  let tempObj = {};
   
   if (params.do === 'sendtransaction') {
     const gasInfo = {};
     gasInfo.gasLimit = await getGasLimit(web3);
     gasInfo.gasPrice = await getGasPrice(web3);
-    tempObj.sendTransaction = await sendTransaction(params, web3, gasInfo);
+    tempObj.hash = await sendTransaction(params, web3, gasInfo);
   } else if (params.do === 'createaccount') {
     tempObj.account = await createAccount(web3)
   } else if (params.do === 'getbalance') {
@@ -27,8 +26,17 @@ async function ethereum(params) {
   } else {
     tempObj.transaction = await getTransaction(params, web3)
   }
-  return tempObj;
+
+  if(isEmpty(tempObj)) {
+    return undefined;
+  } else {
+    return tempObj;
+  }
   
+}
+
+function isEmpty(obj) {
+  return Object.keys(obj).length === 0;
 }
 
 function getGasLimit(web3) {
@@ -50,7 +58,7 @@ function getGasPrice(web3) {
 
 function sendTransaction(params, web3, gasInfo) {
   const fromPubKey = params.fromPubKey;
-  const fromPriKey = parmas.fromPriKey.substr(2);
+  const fromPriKey = params.fromPriKey.substr(2);
   const toPubKey = params.toPubKey;
 
   const privateKey = Buffer.from(fromPriKey, 'hex');
