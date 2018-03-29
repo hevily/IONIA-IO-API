@@ -2,6 +2,7 @@ const package_sha512 = require('sha512');
 const sha = require("jssha");
 const package_sha256 = require('js-sha256').sha256;
 const package_base64 = require('js-base64').Base64;
+const cryptojs = require("crypto-js");
 const querystring = require('querystring');
 
 // TODO: jssha로 모두 처리하도록 수정
@@ -32,7 +33,16 @@ function sha256_hmac(key, data) {
     return package_sha256.hmac(key, data);
 }
 
+function md5_hmac(key, data) {
+    if(typeof(data) === "object") {
+        data = querystring.stringify(data);
+    }
+
+    return cryptojs.HmacMD5(data, key).toString();
+}
+
 exports.sha512_hmac = sha512_hmac;
 exports.sha256_hmac = sha256_hmac;
 exports.sha384_hmac = sha384_hmac;
+exports.md5_hmac = md5_hmac;
 exports.base64 = package_base64;
