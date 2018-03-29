@@ -44,6 +44,10 @@ async function getbalances(params) {
         yobit: {
             apiKey: '',
             secretKey: ''
+        },
+        hitbtc: {
+            apiKey: '',
+            secretKey: ''
         }
     };
     

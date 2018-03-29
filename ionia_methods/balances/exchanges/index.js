@@ -6,5 +6,6 @@ exports.coinone = require('./coinone');
 exports.binance = require('./binance');
 exports.bitfinex = require('./bitfinex');
 // exports.huobi = require('./huobi');
-// exports.kucoin = require('./kucoin');
+exports.kucoin = require('./kucoin');
 exports.yobit = require('./yobit');
+exports.hitbtc = require('./hitbtc');
