@@ -9,3 +9,4 @@ exports.bitfinex = require('./bitfinex');
 exports.kucoin = require('./kucoin');
 exports.yobit = require('./yobit');
 exports.hitbtc = require('./hitbtc');
+exports.bibox = require('./bibox');

@@ -48,6 +48,10 @@ async function getbalances(params) {
         hitbtc: {
             apiKey: '',
             secretKey: ''
+        },
+        bibox: {
+            apiKey: '',
+            secretKey: ''
         }
     };
     
