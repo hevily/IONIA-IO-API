@@ -7,8 +7,11 @@ async function request(url, method='GET', headers={}, dataOrParams={}, auth={}) 
     const requestOptions = {
         method: method,
         url: url,
-        headers: headers,
-        auth: auth
+        headers: headers
+    }
+
+    if(auth.username !== undefined) {
+        requestOptions['auth'] = auth;
     }
 
     if(method === 'GET') {
