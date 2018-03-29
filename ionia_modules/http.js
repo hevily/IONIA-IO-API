@@ -1,13 +1,14 @@
 const axios = require('axios');
 const querystring = require('querystring');
 
-async function request(url, method='GET', headers={}, dataOrParams={}) {
+async function request(url, method='GET', headers={}, dataOrParams={}, auth={}) {
     headers['Connection'] = 'keep-alive';
 
     const requestOptions = {
         method: method,
         url: url,
         headers: headers,
+        auth: auth
     }
 
     if(method === 'GET') {
