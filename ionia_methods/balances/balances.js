@@ -61,6 +61,11 @@ async function getbalances(params) {
             apiKey: '',
             secretKey: ''
         },
+        cex: {
+            id: '',
+            apiKey: '',
+            secretKey: ''
+        }
     };
     
     const exchangeFunctions = [];
