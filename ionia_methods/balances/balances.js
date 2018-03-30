@@ -52,7 +52,15 @@ async function getbalances(params) {
         bibox: {
             apiKey: '',
             secretKey: ''
-        }
+        },
+        bitmex: {
+            apiKey: '',
+            secretKey: ''
+        },
+        okex: {
+            apiKey: '',
+            secretKey: ''
+        },
     };
     
     const exchangeFunctions = [];
