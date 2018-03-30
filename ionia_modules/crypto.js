@@ -33,6 +33,14 @@ function sha256_hmac(key, data) {
     return package_sha256.hmac(key, data);
 }
 
+function md5(data) {
+    if(typeof(data) === "object") {
+        data = querystring.stringify(data);
+    }
+    console.log(data);
+    return cryptojs.MD5(data).toString();
+}
+
 function md5_hmac(key, data) {
     if(typeof(data) === "object") {
         data = querystring.stringify(data);
@@ -45,4 +53,5 @@ exports.sha512_hmac = sha512_hmac;
 exports.sha256_hmac = sha256_hmac;
 exports.sha384_hmac = sha384_hmac;
 exports.md5_hmac = md5_hmac;
+exports.md5 = md5;
 exports.base64 = package_base64;
