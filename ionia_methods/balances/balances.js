@@ -60,11 +60,6 @@ async function getbalances(params) {
         okex: {
             apiKey: '',
             secretKey: ''
-        },
-        cex: {
-            id: '',
-            apiKey: '',
-            secretKey: ''
         }
     };
     
