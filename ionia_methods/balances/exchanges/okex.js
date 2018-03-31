@@ -13,7 +13,7 @@ async function getbalances(data) {
         'Content-type' : 'application/x-www-form-urlencoded',
     };
 
-    requestBody.sign = crypto.md5(`api_key=${requestBody.api_key}&secret_key=${data.okex.secretKey}`).toUpperCase();
+    requestBody.sign = crypto.hash('md5', `api_key=${requestBody.api_key}&secret_key=${data.okex.secretKey}`).toUpperCase();
 
     const response = await http.request(url, 'POST', headers, requestBody);
 

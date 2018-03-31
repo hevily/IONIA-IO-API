@@ -10,12 +10,12 @@ async function getbalances(data) {
         nonce: new Date().getTime()
     };
 
-    const payload = crypto.base64.encode(JSON.stringify(requestBody))
+    const payload = crypto.encode('base64', JSON.stringify(requestBody))
 
     const headers = {
         'Content-type': 'application-json',
         'X-COINONE-PAYLOAD': payload,
-        'X-COINONE-SIGNATURE': crypto.sha512_hmac(data.coinone.secretKey.toUpperCase(), payload)
+        'X-COINONE-SIGNATURE': crypto.hmac('sha512', data.coinone.secretKey.toUpperCase(), payload)
     }
 
     const response = await http.request(url, 'POST', headers, payload);

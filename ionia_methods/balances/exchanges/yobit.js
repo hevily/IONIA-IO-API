@@ -12,7 +12,7 @@ async function getbalances(data) {
 
     const headers = {
         Key: data.yobit.apiKey,
-        Sign: crypto.sha512_hmac(data.yobit.secretKey, requestBody)
+        Sign: crypto.hmac('sha512', data.yobit.secretKey, requestBody)
     }
 
     const response = await http.request(url, 'POST', headers, requestBody);

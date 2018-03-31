@@ -17,12 +17,11 @@ async function getbalances(data) {
         'KC-API-NONCE': new Date().getTime()
     }
 
-    const strForSign = crypto.base64.encode(uri + '/' + headers['KC-API-NONCE'] + '/' + querystring.stringify(requestParams));
+    const strForSign = crypto.encode('base64', uri + '/' + headers['KC-API-NONCE'] + '/' + querystring.stringify(requestParams));
 
-    headers['KC-API-SIGNATURE'] = crypto.sha256_hmac(data.kucoin.secretKey, strForSign)
+    headers['KC-API-SIGNATURE'] = crypto.hmac('sha256', data.kucoin.secretKey, strForSign)
 
     const response = await http.request(host + uri + '?' + querystring.stringify(requestParams), 'GET', headers);
-    console.log(response);
 
     return response.success === true ? makeResult(response.data) : {};
 }

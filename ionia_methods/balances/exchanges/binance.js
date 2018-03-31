@@ -6,7 +6,7 @@ async function getbalances(data) {
         timestamp: new Date().getTime()
     }
 
-    const signature = crypto.sha256_hmac(data.binance.secretKey, requestBody);
+    const signature = crypto.hmac('sha256', data.binance.secretKey, requestBody);
 
     const url = `https://api.binance.com/api/v3/account?timestamp=${requestBody.timestamp}&signature=${signature}`;
 

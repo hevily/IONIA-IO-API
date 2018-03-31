@@ -7,7 +7,7 @@ async function getbalances(data) {
     
     const headers = {
         'Api-Key': data.livecoin.apiKey,
-        'Sign': crypto.sha256_hmac(data.livecoin.secretKey, {}).toUpperCase()
+        'Sign': crypto.hmac('sha256', data.livecoin.secretKey, {}).toUpperCase()
     }
 
     const response = await http.request(url, 'GET', headers);

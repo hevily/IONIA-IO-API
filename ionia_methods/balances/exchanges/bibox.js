@@ -14,7 +14,7 @@ async function getbalances(data) {
     const requestBody = {
         cmds: JSON.stringify(cmds),
         apikey: data.bibox.apiKey,
-        sign: crypto.md5_hmac(data.bibox.secretKey, JSON.stringify(cmds))
+        sign: crypto.hmac('md5', data.bibox.secretKey, JSON.stringify(cmds))
     };
 
     const response = await http.request(url, 'POST', {}, requestBody);

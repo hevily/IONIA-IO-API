@@ -15,7 +15,7 @@ async function getbalances(data) {
 
     const headers = {
         'Api-Key': data.bitthumb.apiKey,
-        'Api-Sign': crypto.base64.encode(crypto.sha512_hmac(data.bitthumb.secretKey, `${uri}\0${querystring.stringify(requestBody)}\0${nonce}`)),
+        'Api-Sign': crypto.encode('base64', crypto.hmac('sha512', data.bitthumb.secretKey, `${uri}\0${querystring.stringify(requestBody)}\0${nonce}`)),
         'Api-Nonce': nonce
     }
 

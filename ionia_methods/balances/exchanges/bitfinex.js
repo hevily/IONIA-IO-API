@@ -11,8 +11,8 @@ async function getbalances(data) {
         nonce: Date.now().toString()
     }
 
-    const payload = crypto.base64.encode(JSON.stringify(requestBody));
-    const signature = crypto.sha384_hmac(data.bitfinex.secretKey, payload);
+    const payload = crypto.encode('base64', JSON.stringify(requestBody));
+    const signature = crypto.hmac('sha384', data.bitfinex.secretKey, payload);
 
     const headers = {
         'X-BFX-APIKEY': data.bitfinex.apiKey,
