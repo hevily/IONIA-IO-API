@@ -12,25 +12,29 @@ async function ethereum(params) {
     web3 = new Web3(new Web3.providers.HttpProvider(mainnet));
   }
 
-  let tempObj = {};
+  let result = {};
   
   if (params.do === 'sendtransaction') {
     const gasInfo = {};
     gasInfo.gasLimit = await getGasLimit(web3);
     gasInfo.gasPrice = await getGasPrice(web3);
-    tempObj.hash = await sendTransaction(params, web3, gasInfo);
+    result.hash = await sendTransaction(params, web3, gasInfo);
+
   } else if (params.do === 'createaccount') {
-    tempObj.account = await createAccount(web3)
+    result.account = await createAccount(web3)
+
   } else if (params.do === 'getbalance') {
-    tempObj.balance = await getBalance(params, web3);
+    result.balance = await getBalance(params, web3);
+
   } else {
-    tempObj.transaction = await getTransaction(params, web3)
+    result.transaction = await getTransaction(params, web3)
+    
   }
 
-  if(isEmpty(tempObj)) {
+  if(isEmpty(result)) {
     return undefined;
   } else {
-    return tempObj;
+    return result;
   }
   
 }

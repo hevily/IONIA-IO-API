@@ -1,4 +1,4 @@
-const PRIVACY = require('./../../privacy.json');
+const PRIVACY = require('./../../privacy.json')
 
 async function bitcoin(params, callback) {
   const kapitalize = require('./../../ionia_modules/kapitalize/kapitalize')({
@@ -7,112 +7,157 @@ async function bitcoin(params, callback) {
     user: PRIVACY.BLOCKCHAINS.BITCOIN.USERNAME,
     pass: PRIVACY.BLOCKCHAINS.BITCOIN.PASSWORD
   })
-  let result;
-  if (params.do === 'send') {
-    result = await send(params, kapitalize)
-  } else if (params.do === 'getnewaddress') {
-    result = await createAddress(params, kapitalize)
-  } else if (params.do === 'searchTransaction'){
-    result = await searchTransaction(params, kapitalize)
-  } else if(params.do === 'getaccount') {
-    result = await getAccount(params, kapitalize)
-  } else if (params.do === 'dumpprivkey') {
-    result = await getDumpPrivateKey(params, kapitalize)
-  } else if (params.do === 'importprivkey') {
-    result = await importPrivateKey(params, kapitalize)
+  let result = {}
+  /**
+    1. 계정 생성
+      - 지갑 unlock
+      - 계정 생성
+      - 계성에 따른 프라이빗 키 가져오기
+      - 프라이빗 키 import
+      - 지갑 lock
+    2. 트랜젝션 발행
+      - 지갑 unlock
+      - sendfrom 사용
+      - 지갑 lock
+    3. 트랜젝션 검색
+      - gettransaction 사용하여 검사
+    4. 벨런스 조회
+      - getbalance 사용하여 조회
+   */
+
+  if (params.do === 'createaccount') {
+    result.account = {}
+    result.account.address = await createAccount(params, kapitalize)
+    await unlockWallet(PRIVACY.BLOCKCHAINS.BITCOIN.WALLETPASSWD, kapitalize);
+    result.account.privkey = await getDumpPrivateKey(result.account.address, kapitalize)
+    await importPrivateKey(params, result.account.privkey, kapitalize)
+    await lockWallet(kapitalize)
+
+  } else if (params.do === 'getbalance') {
+    result.balance = getBalance(params, kapitalize)
+
+  } else if (params.do === 'sendtransaction') {
+    await unlockWallet(PRIVACY.BLOCKCHAINS.BITCOIN.WALLETPASSWD, kapitalize);
+    result.hash = await sendTransaction(params, kapitalize)
+    await lockWallet(kapitalize)
+
   } else {
-    // get balance
-    result = await getBalance(params, kapitalize)
+    result.transaction = await getTransaction(params, kapitalize)
+    
   }
-  return result;
-  
+
+  if(isEmpty(result)) {
+    return undefined
+  } else {
+    return result
+  }
 }
 
-function send(params, kap) {
+
+function isEmpty(obj) {
+  return Object.keys(obj).length === 0
+}
+
+function unlockWallet(passwd, kap) {
+  return new Promise((resolve, reject) => {
+    kap.exec('walletpassphrase', passwd, 10, function(err, result) {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(result);
+      }
+    })
+  })
+}
+
+function lockWallet(kap) {
+  return new Promise((resolve, reject) => {
+    kapitalize.exec('walletlock', function(err, result) {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(result);
+      }
+    })
+  })
+}
+
+function sendTransaction(params, kap) {
   return new Promise((resolve, reject) => {
     kap.exec('sendfrom', params.account, params.toaddress, params.amount, function(err, result) {
       if(err) {
-        reject(err);
+        reject(err)
       } else {
-        console.log(result);
-        resolve(result);
+        console.log(result)
+        resolve(result)
       }
-    });
+    })
   })
 }
 
-function createAddress(params, kap) {
+function createAccount(params, kap) {
   return new Promise((resolve, reject) => {
     kap.exec('getNewAddress', params.account ,function(err, address) {
       if(err) {
-        reject(err);
+        reject(err)
       } else {
-        console.log(address);
-        resolve(address);
+        console.log(address)
+        resolve(address)
       }
-    });
+    })
   })
 }
 
-function searchTransaction(params, kap) {
-
+function getTransaction(params, kap) {
+  return new Promise((resolve, reject) => {
+    kap.exec('gettransaction', params.hash, function(err, result) {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(result)
+      }
+    })
+  })
 }
 
 function getBalance(params, kap) {
   return new Promise((resolve, reject) => {
-    console.log(params.account);
-    kap.exec('getbalance', function(err, balance) {
+    kap.exec('getbalance', params.account, function(err, balance) {
       if(err) {
-        console.log(err);
-        reject(err);
+        console.log(err)
+        reject(err)
       } else {
-        console.log(balance);
-        resolve(balance);
+        console.log(balance)
+        resolve(balance)
       }
     })
   })
 }
 
-function getAccount(params, kap) {
+function getDumpPrivateKey(address, kap) {
   return new Promise((resolve, reject) => {
-    kap.exec('getaccount', params.address, function(err, account) {
+    kap.exec('dumpprivkey', address, function(err, prikey) {
       if(err) {
-        console.log(err);
-        reject(err);
+        console.log(err)
+        reject(err)
       } else {
-        console.log(account);
-        resolve(account);
+        resolve(prikey)
       }
     })
   })
 }
 
-function getDumpPrivateKey(params, kap) {
+function importPrivateKey(params, privkey, kap) {
   return new Promise((resolve, reject) => {
-    kap.exec('dumpprivkey', params.address, function(err, prikey) {
+    kap.exec('importprivkey', privkey, params.account, function(err, result) {
       if(err) {
-        console.log(err);
-        reject(err);
+        console.log(err)
+        reject(err)
       } else {
-        console.log('dumpprivatekey : ', prikey);
-        resolve(prikey);
+        resolve(result)
       }
     })
   })
 }
 
-function importPrivateKey(params, kap) {
-  return new Promise((resolve, reject) => {
-    kap.exec('importprivkey', params.prikey, params.account, function(err, result) {
-      if(err) {
-        console.log(err);
-        reject(err);
-      } else {
-        console.log('import result : ', result);
-        resolve(result);
-      }
-    })
-  })
-}
-
-exports.bitcoin = bitcoin;
+exports.bitcoin = bitcoin
