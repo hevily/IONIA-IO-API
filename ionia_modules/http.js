@@ -15,7 +15,7 @@ async function request(url, method='GET', headers={}, dataOrParams={}, auth={}) 
     }
 
     if(method === 'GET') {
-        requestOptions['params'] = querystring.stringify(dataOrParams);
+        requestOptions['params'] = dataOrParams;
     }
     else if(method === 'POST') {
         requestOptions['data'] = querystring.stringify(dataOrParams);
