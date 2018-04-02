@@ -68,7 +68,7 @@ function lockWallet(kap) {
 
 function sendTransaction(params, kap) {
   return new Promise((resolve, reject) => {
-    kap.exec('sendfrom', params.account, params.toaddress, params.amount, function(err, result) {
+    kap.exec('sendfrom', params.account, params.toaddress, params.amount, params.confirm, params.comment, params.commentto, function(err, result) {
       if(err) {
         reject(err)
       } else {
