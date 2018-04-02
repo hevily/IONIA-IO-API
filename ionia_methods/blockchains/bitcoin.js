@@ -8,22 +8,6 @@ async function bitcoin(params, callback) {
     pass: PRIVACY.BLOCKCHAINS.BITCOIN.PASSWORD
   })
   let result = {}
-  /**
-    1. 계정 생성
-      - 지갑 unlock
-      - 계정 생성
-      - 계성에 따른 프라이빗 키 가져오기
-      - 프라이빗 키 import
-      - 지갑 lock
-    2. 트랜젝션 발행
-      - 지갑 unlock
-      - sendfrom 사용
-      - 지갑 lock
-    3. 트랜젝션 검색
-      - gettransaction 사용하여 검사
-    4. 벨런스 조회
-      - getbalance 사용하여 조회
-   */
 
   if (params.do === 'createaccount') {
     result.account = {}
@@ -34,7 +18,7 @@ async function bitcoin(params, callback) {
     await lockWallet(kapitalize)
 
   } else if (params.do === 'getbalance') {
-    result.balance = getBalance(params, kapitalize)
+    result.balance = await getBalance(params, kapitalize)
 
   } else if (params.do === 'sendtransaction') {
     await unlockWallet(PRIVACY.BLOCKCHAINS.BITCOIN.WALLETPASSWD, kapitalize);
@@ -72,7 +56,7 @@ function unlockWallet(passwd, kap) {
 
 function lockWallet(kap) {
   return new Promise((resolve, reject) => {
-    kapitalize.exec('walletlock', function(err, result) {
+    kap.exec('walletlock', function(err, result) {
       if (err) {
         reject(err)
       } else {
@@ -84,7 +68,7 @@ function lockWallet(kap) {
 
 function sendTransaction(params, kap) {
   return new Promise((resolve, reject) => {
-    kap.exec('sendfrom', params.account, params.toaddress, params.amount, function(err, result) {
+    kap.exec('sendfrom', params.account, params.toaddress, params.amount, params.confirm, params.comment, params.commentto, function(err, result) {
       if(err) {
         reject(err)
       } else {
@@ -101,7 +85,6 @@ function createAccount(params, kap) {
       if(err) {
         reject(err)
       } else {
-        console.log(address)
         resolve(address)
       }
     })
@@ -122,13 +105,12 @@ function getTransaction(params, kap) {
 
 function getBalance(params, kap) {
   return new Promise((resolve, reject) => {
-    kap.exec('getbalance', params.account, function(err, balance) {
+    kap.exec('getbalance', params.account, function(err, result) {
       if(err) {
         console.log(err)
         reject(err)
       } else {
-        console.log(balance)
-        resolve(balance)
+        resolve(result.result)
       }
     })
   })
@@ -154,6 +136,7 @@ function importPrivateKey(params, privkey, kap) {
         console.log(err)
         reject(err)
       } else {
+        console.log('import result : ', result);
         resolve(result)
       }
     })
