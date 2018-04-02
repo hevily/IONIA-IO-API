@@ -30,7 +30,8 @@ async function request(url, method='GET', headers={}, dataOrParams={}, auth={}) 
         response = await axios(requestOptions);
         response = response.data;
     } catch(error) {
-        console.log(error);
+        response = error.response.data;
+        console.log(error.response.data);
     }
 
     return response;
