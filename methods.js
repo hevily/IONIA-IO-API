@@ -7,6 +7,7 @@ const logout = require('./ionia_methods/auth/logout').logout;
 // blockchain
 const bitcoin = require('./ionia_methods/blockchains/bitcoin').bitcoin;
 const ethereum = require('./ionia_methods/blockchains/ethereum').ethereum;
+const erctokens = require('./ionia_methods/blockchains/erctokens').erctokens;
 
 // exchanges methods
 jsonRpc.registMethod('getbalances', getbalances);
@@ -19,5 +20,6 @@ jsonRpc.registMethod('logout', logout);
 // blockchain method
 jsonRpc.registMethod('bitcoin', bitcoin);
 jsonRpc.registMethod('ethereum', ethereum);
+jsonRpc.registMethod('erctokens', erctokens);
 
 module.exports = jsonRpc;
