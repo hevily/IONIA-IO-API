@@ -18,7 +18,9 @@ async function ethereum(params) {
     const gasInfo = {};
     gasInfo.gasLimit = await getGasLimit(web3);
     gasInfo.gasPrice = await getGasPrice(web3);
-    result.hash = await sendTransaction(params, web3, gasInfo);
+    // private nonce 
+    const nonce =  await web3.eth.getTransactionCount(params.fromPubKey);
+    result.hash = await sendTransaction(params, web3, gasInfo, nonce);
 
   } else if (params.do === 'createaccount') {
     result.account = await createAccount(web3)
@@ -60,14 +62,14 @@ function getGasPrice(web3) {
 }
 
 
-function sendTransaction(params, web3, gasInfo) {
+function sendTransaction(params, web3, gasInfo, nonce) {
   const fromPubKey = params.fromPubKey;
   const fromPriKey = params.fromPriKey.substr(2);
   const toPubKey = params.toPubKey;
 
   const privateKey = Buffer.from(fromPriKey, 'hex');
 
-  const nonceHex = web3.utils.toHex( web3.eth.getTransactionCount(fromPubKey));
+  const nonceHex = web3.utils.toHex(nonce);
   const gasLimit = web3.utils.toHex(gasInfo.gasLimit);
   const gasPrice = web3.utils.toHex(gasInfo.gasPrice);
   const value = web3.utils.toHex(web3.utils.toWei(params.value));
@@ -78,14 +80,13 @@ function sendTransaction(params, web3, gasInfo) {
     gasPrice: gasPrice, 
     gasLimit: gasLimit,
     to: toPubKey, 
-    value: value, 
+    value: value,
     data: data,
-    // EIP 155 chainId - mainnet: 1, ropsten: 3
     chainId: 1
   }
 
   const tx = new EthereumTx(txParams)
-  tx.sign(privateKey);
+  tx.sign(privateKey)
   const serializedTx = tx.serialize()
 
   return new Promise((resolve, reject) => {
@@ -122,7 +123,6 @@ function getBalance(params, web3) {
         console.log(err);
         reject(err);
       } else {
-        console.log('arnold bal :', web3.utils.fromWei(balance) + ' eth');
         resolve(web3.utils.fromWei(balance));
       }
     })
