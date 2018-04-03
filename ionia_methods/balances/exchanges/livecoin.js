@@ -1,7 +1,7 @@
-const http = require('../../../ionia_modules/http');
-const crypto = require('../../../ionia_modules/crypto');
+const http = require('../../../ionia_modules/http')
+const crypto = require('../../../ionia_modules/crypto')
 
-const url = 'https://api.livecoin.net/payment/balances';
+const url = 'https://api.livecoin.net/payment/balances'
 
 async function getbalances(data) {
     
@@ -10,58 +10,58 @@ async function getbalances(data) {
         'Sign': crypto.hmac('sha256', data.livecoin.secretKey, {}).toUpperCase()
     }
 
-    const response = await http.request(url, 'GET', headers);
+    const response = await http.request(url, 'GET', headers)
 
-    return makeResult(response);
+    return makeResult(response)
 }
 
 function makeResult(response) {
-    const result = {};
-    const livecoinObject = result['livecoin'] = {};
+    const result = {}
+    const livecoinObject = result['livecoin'] = {}
 
-    for(let i = 0; i < response.length; i++) {
-        const currencyObject = response[i];
-        const currencyName = currencyObject.currency.toLowerCase();
+    for(let i = 0 ; i < response.length ; i++) {
+        const currencyObject = response[i]
+        const currencyName = currencyObject.currency.toLowerCase()
         
         if(['usd', 'rur', 'eur'].indexOf(currencyName) > -1) {
-            continue;
+            continue
         }
 
         if(livecoinObject[currencyName] === undefined) {
-            livecoinObject[currencyName] = {};
-            livecoinObject[currencyName].address = null;
+            livecoinObject[currencyName] = {}
+            livecoinObject[currencyName].address = null
         }
 
         if(currencyObject.type === 'total') {
-            livecoinObject[currencyName]['balance'] = currencyObject.value;
+            livecoinObject[currencyName]['balance'] = currencyObject.value
         }
         else if(currencyObject.type === 'available') {
-            livecoinObject[currencyName]['available'] = currencyObject.value;
+            livecoinObject[currencyName]['available'] = currencyObject.value
         }
         else if(currencyObject.type === 'trade') {
-            livecoinObject[currencyName]['pending'] = currencyObject.value;
+            livecoinObject[currencyName]['pending'] = currencyObject.value
         }
     }
 
-    return result;
+    return result
 }
 
 function sortObjectByKey(requestBody) {
-    const keys = [];
+    const keys = []
 
     for(const key in requestBody) {
-        keys.push(key);
+        keys.push(key)
     }
 
-    keys.sort();
+    keys.sort()
 
-    const sortedObject = {};
+    const sortedObject = {}
 
     for(const key in keys) {
-        sortedObject[key] = requestBody[key];
+        sortedObject[key] = requestBody[key]
     }
 
-    return sortedObject;
+    return sortedObject
 }
 
-exports.getbalances = getbalances;
+exports.getbalances = getbalances

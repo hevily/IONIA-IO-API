@@ -1,5 +1,5 @@
 function logout(ctx, params) {
-    ctx.logout();
+    ctx.logout()
 }
 
-exports.logout = logout;
+exports.logout = logout

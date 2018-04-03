@@ -95,17 +95,17 @@ Client.prototype = {
     },
 
     set:function(k, v) {
-        var type = typeof(k);
+        var type = typeof(k)
 
         if (typeof(k) === 'object') {
             for (var key in k) {
-                this.set(key, k[key]);
-            };
-            return;
-        };
+                this.set(key, k[key])
+            }
+            return
+        }
 
-        var opts = this.opts;
-        var k = k.toLowerCase();
+        var opts = this.opts
+        var k = k.toLowerCase()
 
         if (opts.hasOwnProperty(k)) {
             opts[k] = v
@@ -116,7 +116,7 @@ Client.prototype = {
             }
         }
 
-        return this;
+        return this
     },
 
     get:function(k) {
@@ -127,12 +127,12 @@ Client.prototype = {
 }
 
 api.commands.forEach(function(command) {
-    var cp  = Client.prototype;
-    var tlc = [command.toLowerCase()];
+    var cp  = Client.prototype
+    var tlc = [command.toLowerCase()]
 
     cp[command] = cp[tlc] = function() {
-        cp.send.apply(this, tlc.concat(([]).slice.call(arguments)));
-    };
+        cp.send.apply(this, tlc.concat(([]).slice.call(arguments)))
+    }
 })
 
 module.exports = function(options) {

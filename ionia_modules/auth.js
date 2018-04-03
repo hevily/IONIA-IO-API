@@ -1,30 +1,30 @@
 const passport = require('koa-passport')
 const mongo = require('mongoose')
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt')
 
 //
 // User serialization
 //
 passport.serializeUser(function(user, done) {
-  console.log('\n\n\nSerializing: %s\n\n\n\n', user);
-  done(null, user._id);
-});
+  console.log('\n\n\nSerializing: %s\n\n\n\n', user)
+  done(null, user._id)
+})
 
 //
 // User deserialization
 //
 passport.deserializeUser(function(id, done) {
-  console.log('\nDeserializing: %s\n\n', id);
-  const User = mongo.model('User');
+  console.log('\nDeserializing: %s\n\n', id)
+  const User = mongo.model('User')
   User.findOne({ _id: id }, function (err, user) {
       if (err) {
-          console.log('ERR: ', err);
-          done(err);
+          console.log('ERR: ', err)
+          done(err)
       } else {
-          done(null, user);
+          done(null, user)
       }
-  });
-});
+  })
+})
 
 const LocalStrategy = require('passport-local').Strategy
 passport.use(new LocalStrategy({
@@ -32,34 +32,34 @@ passport.use(new LocalStrategy({
     passwordField: 'password',
     passReqToCallback: true
   },function(ctx, email, password, done) {
-    const User = mongo.model('User');
-    console.log(email, password);
+    const User = mongo.model('User')
+    console.log(email, password)
     User.findOne({ 'email': email }, function (err, profile) {
-        const user = profile;
+        const user = profile
         if (err) {
-          console.log(500 + 'Some error occur');
-          done(err);
-          return;
+          console.log(500 + 'Some error occur')
+          done(err)
+          return
         }
         if (!user) {
-          console.log(400 + 'User not find');
-          done(null, false);
-          return;
+          console.log(400 + 'User not find')
+          done(null, false)
+          return
         }
 
         // verify password
         if (!bcrypt.compareSync(password, user.password)) {
-          console.log('\n\nFound UNauthenticated user ( Password ): %s', user);
-          done(null, false);
+          console.log('\n\nFound UNauthenticated user ( Password ): %s', user)
+          done(null, false)
         } else if (email !== user.email) {
-          console.log('\n\nFound UNauthenticated user ( Email ): %s', user);
-          done(null, false);
+          console.log('\n\nFound UNauthenticated user ( Email ): %s', user)
+          done(null, false)
         }else {
-          console.log('ionia-user : ', user);
-          user.password = undefined;
+          console.log('ionia-user : ', user)
+          user.password = undefined
           done(null, user)
         }
-    });
+    })
   })
 )
 
@@ -84,7 +84,7 @@ passport.use(new TwitterStrategy({
   function(token, tokenSecret, profile, done) {
     // retrieve user ...
     fetchUser().then(user => { 
-      console.log(user);
+      console.log(user)
       done(null, user)
     })
   }
@@ -99,7 +99,7 @@ passport.use(new GoogleStrategy({
   function(token, tokenSecret, profile, done) {
     // retrieve user ...
     fetchUser().then(user => { 
-      console.log(user);
+      console.log(user)
       done(null, user)
     })
   }

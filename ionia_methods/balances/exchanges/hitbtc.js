@@ -1,25 +1,25 @@
-const http = require('../../../ionia_modules/http');
+const http = require('../../../ionia_modules/http')
 
 
 async function getbalances(data) {
-    const url = 'https://api.hitbtc.com/api/2/account/balance';
+    const url = 'https://api.hitbtc.com/api/2/account/balance'
 
     const auth = {
         username: data.hitbtc.apiKey,
         password: data.hitbtc.secretKey
     }
 
-    const response = await http.request(url, 'GET', {}, {}, auth);
+    const response = await http.request(url, 'GET', {}, {}, auth)
 
-    return makeResult(response);
+    return makeResult(response)
 }
 
 function makeResult(tokens) {
-    const result = {};
-    const hitbtcObject = result['hitbtc'] = {};
+    const result = {}
+    const hitbtcObject = result['hitbtc'] = {}
 
     for(let i = 0; i < tokens.length; i++) {
-        const token = tokens[i];
+        const token = tokens[i]
 
         hitbtcObject[token.currency] = {
             available: parseFloat(token.available),
@@ -29,7 +29,7 @@ function makeResult(tokens) {
         }
     }
 
-    return result;
+    return result
 }
 
-exports.getbalances = getbalances;
+exports.getbalances = getbalances

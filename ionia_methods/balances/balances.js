@@ -1,4 +1,4 @@
-const exchanges = require('./exchanges');
+const exchanges = require('./exchanges')
 
 
 async function getbalances(params) {
@@ -61,36 +61,36 @@ async function getbalances(params) {
             apiKey: '',
             secretKey: ''
         }
-    };
-    
-    const exchangeFunctions = [];
-    
-    for(const exchange in exchanges) {
-        exchangeFunctions.push(exchanges[exchange].getbalances(testData));
     }
     
-    const exchangeResults = await Promise.all(exchangeFunctions);
+    const exchangeFunctions = []
+    
+    for(const exchange in exchanges) {
+        exchangeFunctions.push(exchanges[exchange].getbalances(testData))
+    }
+    
+    const exchangeResults = await Promise.all(exchangeFunctions)
 
-    return makeResponse(exchangeResults);
+    return makeResponse(exchangeResults)
 }
 
 function makeResponse(exchangeResults) {
-    const response = {};
+    const response = {}
 
-    for(let i = 0; i < exchangeResults.length; i++) {
-        const exchangeName = Object.keys(exchangeResults[i])[0];
-        const exchange = exchangeResults[i][exchangeName];
+    for(let i = 0 ; i < exchangeResults.length ; i++) {
+        const exchangeName = Object.keys(exchangeResults[i])[0]
+        const exchange = exchangeResults[i][exchangeName]
 
         for(const tokenName in exchange) {
             if(response[tokenName] === undefined) {
-                response[tokenName] = {};
+                response[tokenName] = {}
             }
             
-            response[tokenName][exchangeName] = exchange[tokenName];
+            response[tokenName][exchangeName] = exchange[tokenName]
         }
     }
 
-    return response;
+    return response
 }
 
-exports.getbalances = getbalances;
+exports.getbalances = getbalances

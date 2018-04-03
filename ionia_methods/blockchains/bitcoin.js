@@ -12,7 +12,7 @@ async function bitcoin(params, callback) {
   if (params.do === 'createaccount') {
     result.account = {}
     result.account.address = await createAccount(params, kapitalize)
-    await unlockWallet(PRIVACY.BLOCKCHAINS.BITCOIN.WALLETPASSWD, kapitalize);
+    await unlockWallet(PRIVACY.BLOCKCHAINS.BITCOIN.WALLETPASSWD, kapitalize)
     result.account.privkey = await getDumpPrivateKey(result.account.address, kapitalize)
     await importPrivateKey(params, result.account.privkey, kapitalize)
     await lockWallet(kapitalize)
@@ -50,7 +50,7 @@ function unlockWallet(passwd, kap) {
       if (err) {
         reject(err)
       } else {
-        resolve(result);
+        resolve(result)
       }
     })
   })
@@ -62,7 +62,7 @@ function lockWallet(kap) {
       if (err) {
         reject(err)
       } else {
-        resolve(result);
+        resolve(result)
       }
     })
   })
@@ -138,7 +138,7 @@ function importPrivateKey(params, privkey, kap) {
         console.log(err)
         reject(err)
       } else {
-        console.log('import result : ', result);
+        console.log('import result : ', result)
         resolve(result)
       }
     })
@@ -149,7 +149,7 @@ function getListTransactions(params, kap) {
   return new Promise((resolve, reject) => {
     // account, count, skip to, watch only address
     kap.exec('listtransactions', params.account, params.count, 0, true, function(results) {
-      resolve(results);
+      resolve(results)
     })
   })
 }

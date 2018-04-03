@@ -1,14 +1,14 @@
-const http = require('../../../ionia_modules/http');
-const crypto = require('../../../ionia_modules/crypto');
-const querystring = require('querystring');
+const http = require('../../../ionia_modules/http')
+const crypto = require('../../../ionia_modules/crypto')
+const querystring = require('querystring')
 
-const url = 'https://api.coinone.co.kr/v2/account/balance/';
+const url = 'https://api.coinone.co.kr/v2/account/balance/'
 
 async function getbalances(data) {
     const requestBody = {
         access_token: data.coinone.apiKey,
         nonce: new Date().getTime()
-    };
+    }
 
     const payload = crypto.encode('base64', JSON.stringify(requestBody))
 
@@ -18,18 +18,18 @@ async function getbalances(data) {
         'X-COINONE-SIGNATURE': crypto.hmac('sha512', data.coinone.secretKey.toUpperCase(), payload)
     }
 
-    const response = await http.request(url, 'POST', headers, payload);
+    const response = await http.request(url, 'POST', headers, payload)
 
-    return response.result === 'success' ? makeResponse(response) : {};
+    return response.result === 'success' ? makeResponse(response) : {}
 }
 
 function makeResponse(tokens) {
-    const result = {};
-    const coinoneObject = result['coinone'] = {};
+    const result = {}
+    const coinoneObject = result['coinone'] = {}
 
     for(const tokenName in tokens) {
         if(tokenName === 'result') {
-            continue;
+            continue
         }
 
         coinoneObject[tokenName] = {
@@ -40,7 +40,7 @@ function makeResponse(tokens) {
         }
     }
 
-    return result;
+    return result
 }
 
-exports.getbalances = getbalances;
+exports.getbalances = getbalances

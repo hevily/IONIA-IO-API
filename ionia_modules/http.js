@@ -1,8 +1,8 @@
-const axios = require('axios');
-const querystring = require('querystring');
+const axios = require('axios')
+const querystring = require('querystring')
 
 async function request(url, method='GET', headers={}, dataOrParams={}, auth={}) {
-    headers['Connection'] = 'keep-alive';
+    headers['Connection'] = 'keep-alive'
 
     const requestOptions = {
         method: method,
@@ -11,30 +11,30 @@ async function request(url, method='GET', headers={}, dataOrParams={}, auth={}) 
     }
 
     if(auth.username !== undefined) {
-        requestOptions['auth'] = auth;
+        requestOptions['auth'] = auth
     }
 
     if(method === 'GET') {
-        requestOptions['params'] = dataOrParams;
+        requestOptions['params'] = dataOrParams
     }
     else if(method === 'POST') {
-        requestOptions['data'] = querystring.stringify(dataOrParams);
+        requestOptions['data'] = querystring.stringify(dataOrParams)
     }
     else {
-        throw 'HTTP Method ' + method + ' is Not found!';
+        throw 'HTTP Method ' + method + ' is Not found!'
     }
 
-    let response = {};
+    let response = {}
 
     try {
-        response = await axios(requestOptions);
-        response = response.data;
+        response = await axios(requestOptions)
+        response = response.data
     } catch(error) {
-        response = error.response.data;
-        console.log(error.response.data);
+        response = error.response.data
+        console.log(error.response.data)
     }
 
-    return response;
+    return response
 }
 
-exports.request = request;
+exports.request = request

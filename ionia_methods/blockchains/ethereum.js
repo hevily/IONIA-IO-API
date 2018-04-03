@@ -1,32 +1,32 @@
-const PRIVACY = require('./../../privacy.json');
-const Web3 = require('web3');
-const EthereumTx = require('ethereumjs-tx');
+const PRIVACY = require('./../../privacy.json')
+const Web3 = require('web3')
+const EthereumTx = require('ethereumjs-tx')
 
 async function ethereum(params) {
-  const mainnet = `http://${PRIVACY.BLOCKCHAINS.ETHEREUM.IP}:${PRIVACY.BLOCKCHAINS.ETHEREUM.PORT}`;
-  let web3;
+  const mainnet = `http://${PRIVACY.BLOCKCHAINS.ETHEREUM.IP}:${PRIVACY.BLOCKCHAINS.ETHEREUM.PORT}`
+  let web3
 
   if (typeof web3 !== 'undefined') {
-    web3 = new Web3(web3.currentProvider);
+    web3 = new Web3(web3.currentProvider)
   } else {
-    web3 = new Web3(new Web3.providers.HttpProvider(mainnet));
+    web3 = new Web3(new Web3.providers.HttpProvider(mainnet))
   }
 
-  let result = {};
+  let result = {}
   
   if (params.do === 'sendtransaction') {
-    const gasInfo = {};
-    gasInfo.gasLimit = await getGasLimit(web3);
-    gasInfo.gasPrice = await getGasPrice(web3);
+    const gasInfo = {}
+    gasInfo.gasLimit = await getGasLimit(web3)
+    gasInfo.gasPrice = await getGasPrice(web3)
     // private nonce 
-    const nonce =  await web3.eth.getTransactionCount(params.fromPubKey);
-    result.hash = await sendTransaction(params, web3, gasInfo, nonce);
+    const nonce =  await web3.eth.getTransactionCount(params.fromPubKey)
+    result.hash = await sendTransaction(params, web3, gasInfo, nonce)
 
   } else if (params.do === 'createaccount') {
     result.account = await createAccount(web3)
 
   } else if (params.do === 'getbalance') {
-    result.balance = await getBalance(params, web3);
+    result.balance = await getBalance(params, web3)
 
   } else {
     result.transaction = await getTransaction(params, web3)
@@ -34,46 +34,46 @@ async function ethereum(params) {
   }
 
   if(isEmpty(result)) {
-    return undefined;
+    return undefined
   } else {
-    return result;
+    return result
   }
   
 }
 
 function isEmpty(obj) {
-  return Object.keys(obj).length === 0;
+  return Object.keys(obj).length === 0
 }
 
 function getGasLimit(web3) {
   return new Promise((resolve, reject) => {
     web3.eth.getBlock('latest').then(function(result) {
-      resolve(result.gasLimit);
-    });
+      resolve(result.gasLimit)
+    })
   })
 }
 
 function getGasPrice(web3) {
   return new Promise((resolve, reject) => {
     web3.eth.getGasPrice().then(function(price) {
-      resolve(price);
-    });
+      resolve(price)
+    })
   })
 }
 
 
 function sendTransaction(params, web3, gasInfo, nonce) {
-  const fromPubKey = params.fromPubKey;
-  const fromPriKey = params.fromPriKey.substr(2);
-  const toPubKey = params.toPubKey;
+  const fromPubKey = params.fromPubKey
+  const fromPriKey = params.fromPriKey.substr(2)
+  const toPubKey = params.toPubKey
 
-  const privateKey = Buffer.from(fromPriKey, 'hex');
+  const privateKey = Buffer.from(fromPriKey, 'hex')
 
-  const nonceHex = web3.utils.toHex(nonce);
-  const gasLimit = web3.utils.toHex(gasInfo.gasLimit);
-  const gasPrice = web3.utils.toHex(gasInfo.gasPrice);
-  const value = web3.utils.toHex(web3.utils.toWei(params.value));
-  const data = web3.utils.toHex(params.data);
+  const nonceHex = web3.utils.toHex(nonce)
+  const gasLimit = web3.utils.toHex(gasInfo.gasLimit)
+  const gasPrice = web3.utils.toHex(gasInfo.gasPrice)
+  const value = web3.utils.toHex(web3.utils.toWei(params.value))
+  const data = web3.utils.toHex(params.data)
 
   const txParams = {
     nonce: nonceHex,
@@ -92,19 +92,19 @@ function sendTransaction(params, web3, gasInfo, nonce) {
   return new Promise((resolve, reject) => {
     web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'), function(err, hash) {                
       if (err) {
-        console.log(err);
-        reject(err);
+        console.log(err)
+        reject(err)
       } else {
-        resolve(hash);
+        resolve(hash)
       }
-    });
+    })
   })
 }
 
 function getTransaction(params, web3) {
   return new Promise((resolve, reject) => {
     web3.eth.getTransaction(params.hash, function(object) {
-      resolve(object);
+      resolve(object)
     })
   })
 }
@@ -112,7 +112,7 @@ function getTransaction(params, web3) {
 function createAccount(web3) {
   return new Promise((resolve, reject) => {
     const account = web3.eth.accounts.create(web3.utils.randomHex(32))
-    resolve(account);
+    resolve(account)
   })
 }
 
@@ -120,13 +120,13 @@ function getBalance(params, web3) {
   return new Promise((resolve, reject) => {
     web3.eth.getBalance(params.address, function(err, balance) {
       if (err) {
-        console.log(err);
-        reject(err);
+        console.log(err)
+        reject(err)
       } else {
-        resolve(web3.utils.fromWei(balance));
+        resolve(web3.utils.fromWei(balance))
       }
     })
   })
 }
 
-exports.ethereum = ethereum;
+exports.ethereum = ethereum

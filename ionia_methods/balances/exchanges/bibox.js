@@ -1,10 +1,10 @@
-const http = require('../../../ionia_modules/http');
-const crypto = require('../../../ionia_modules/crypto');
-const querystring = require('querystring');
+const http = require('../../../ionia_modules/http')
+const crypto = require('../../../ionia_modules/crypto')
+const querystring = require('querystring')
 
 
 async function getbalances(data) {
-    const url = 'https://api.bibox.com/v1/transfer';
+    const url = 'https://api.bibox.com/v1/transfer'
     const cmds = [{
         cmd: "transfer/assets",
         body: {
@@ -15,19 +15,19 @@ async function getbalances(data) {
         cmds: JSON.stringify(cmds),
         apikey: data.bibox.apiKey,
         sign: crypto.hmac('md5', data.bibox.secretKey, JSON.stringify(cmds))
-    };
+    }
 
-    const response = await http.request(url, 'POST', {}, requestBody);
+    const response = await http.request(url, 'POST', {}, requestBody)
 
-    return response.error === undefined ? makeResult(response.result[0].result.assets_list) : {};
+    return response.error === undefined ? makeResult(response.result[0].result.assets_list) : {}
 }
 
 function makeResult(assetsList) {
-    const result = {};
-    const biboxObject = result['bibox'] = {};
+    const result = {}
+    const biboxObject = result['bibox'] = {}
 
-    for(let i = 0; i < assetsList.length; i++) {
-        const coin = assetsList[i];
+    for(let i = 0 ;  i < assetsList.length ; i++) {
+        const coin = assetsList[i]
 
         biboxObject[coin.coin_symbol.toLowerCase()] = {
             available: coin.balance,
@@ -37,7 +37,7 @@ function makeResult(assetsList) {
         }
     }
 
-    return result;
+    return result
 }
 
-exports.getbalances = getbalances;
+exports.getbalances = getbalances
