@@ -7,6 +7,8 @@ module.exports = passport
 const jsonRpc = require('./methods')
 require('./mongo/index')
 
+const db = require('./db_connection').pool;
+
 const app = new koa()
 require('./ionia_modules/auth')
 app.keys = ['secret']
