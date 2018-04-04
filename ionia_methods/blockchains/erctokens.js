@@ -16,10 +16,12 @@ async function erctokens(params) {
   }
 
   let result = {}
+  let contractAddress = '';
+  let abiArray = '';
   // test version bokky
   if (params.do !== 'gettransaction' ) {
-    const contractAddress = ERC20_ADDR[params.tokenName]
-    const abiArray = JSON.parse(fs.readFileSync(path.resolve(__dirname+'/../../erc_abis', `./${params.tokenName}-contract-abi.json`), 'utf-8'))
+    contractAddress = ERC20_ADDR[params.tokenName]
+    abiArray = JSON.parse(fs.readFileSync(path.resolve(__dirname+'/../../erc_abis', `./${params.tokenName}-contract-abi.json`), 'utf-8'))
   }
   
   if (params.do === 'sendtransaction') {
@@ -33,7 +35,7 @@ async function erctokens(params) {
   } else if (params.do === 'getbalance') {
     result.balance = await getBalance(params, web3, contractAddress, abiArray)
 
-  } else if (parmas.do === 'createaccount') {
+  } else if (params.do === 'createaccount') {
     // 어떻게 하는것일까 ...
   } else {
     result.transaction = await getTransaction(params, web3)

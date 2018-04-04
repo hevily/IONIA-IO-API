@@ -1,3 +1,15 @@
 {
-  "bokky" : "0x583cbBb8a8443B38aBcC0c956beCe47340ea1367"
+  "bokky" : "0x583cbBb8a8443B38aBcC0c956beCe47340ea1367",
+  "eos": "0x86Fa049857E0209aa7D9e616F7eb3b3B78ECfdb0",
+  "tether": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+  "tron": "0xf230b790e05390fc8295f4d3f60332c93bed42e2",
+  "vechain": "0xd850942ef8811f2a866692a623011bde52a462c1",
+  "binancecoin": "0x07c7b4f49c2f549a71e3928da317a1caf86a2788",
+  "omisego": "0xd26114cd6EE289AccF82350c8d8487fedB8A0C07",
+  "populous": "0xd4fa1460f537bb9085d22c7bccb5dd450ef28e3a",
+  "bytom": "0xcb97e65f07da24d46bcdd078ebebd7c6e6e3d750",
+  "digixdao": "0x54e93c4b3beb9f41813503a07f05551b5aff111f",
+  "rchain": "0x168296bb09e24a88805cb9c33356536b980d3fc5",
+  "status": "0x744d70fdbe2ba4cf95131626614a1763df805b9e",
+  "aetemity": "0x5ca9a71b1d01849c0a95490cc00559717fcf0d1d"
 }
