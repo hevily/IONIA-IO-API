@@ -17,6 +17,7 @@ const marketinfo = require('./ionia_methods/exchange/exchange').marketinfo
 const shapeshift = require('./ionia_methods/exchange/exchange').shapeshift
 const cancelexchange = require('./ionia_methods/exchange/exchange').cancelexchange
 const transactionstat = require('./ionia_methods/exchange/exchange').transactionstat
+const gethistory = require('./ionia_methods/exchange/exchange').gethistory
 
 
 // balance methods
@@ -28,6 +29,7 @@ jsonRpc.registMethod('marketinfo', marketinfo)
 jsonRpc.registMethod('shapeshift', shapeshift)
 jsonRpc.registMethod('cancelexchange', cancelexchange)
 jsonRpc.registMethod('transactionstat', transactionstat)
+jsonRpc.registMethod('gethistory', gethistory)
 
 // auth
 jsonRpc.registMethod('register', register)
