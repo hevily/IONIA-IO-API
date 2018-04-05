@@ -1,5 +1,6 @@
 const cryptojs = require("crypto-js")
 const querystring = require('querystring')
+const jwt = require('jsonwebtoken')
 
 
 function hmac(hashName, key, data) {
@@ -16,6 +17,8 @@ function hmac(hashName, key, data) {
             return cryptojs.HmacSHA512(data, key).toString()
         case 'md5':
             return cryptojs.HmacMD5(data, key).toString()
+        case 'hs256':
+            return jwt.sign(querystring.parse(data), key, {algorithm: 'HS256'})
         default:
             throw `${hashName} not found!`
     }
