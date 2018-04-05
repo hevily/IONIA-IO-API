@@ -60,6 +60,10 @@ async function getbalances(params) {
         okex: {
             apiKey: '',
             secretKey: ''
+        },
+        qryptos :{
+            apiKey: '',
+            secretKey: ''
         }
     }
     
