@@ -16,30 +16,49 @@ async function erctokens(params) {
   }
 
   let result = {}
-  let contractAddress = '';
-  let abiArray = '';
-  // test version bokky
-  if (params.do !== 'gettransaction' ) {
-    contractAddress = ERC20_ADDR[params.tokenName]
-    abiArray = JSON.parse(fs.readFileSync(path.resolve(__dirname+'/../../erc_abis', `./${params.tokenName}-contract-abi.json`), 'utf-8'))
-  }
-  
+  let contractAddress = ''
+  let abiArray = ''
+
   if (params.do === 'sendtransaction') {
+    const smartcontractInfo = {};
+    smartcontractInfo.abi = await getAbi(params.tokenName)
+    smartcontractInfo.contractAddress = getContractAddress(params.tokenName)
+
     const gasInfo = {}
     gasInfo.gasLimit = await getGasLimit(web3)
     gasInfo.gasPrice = await getGasPrice(web3)
     const nonce = await web3.eth.getTransactionCount(params.frompubKey)
-    // get contract address & abi read
-    result.hash = await sendTransaction(params, web3, gasInfo, nonce, contractAddress, abiArray)
+
+    result.hash = await sendTransaction(params, web3, gasInfo, nonce, smartcontractInfo.contractAddress, smartcontractInfo.abi)
 
   } else if (params.do === 'getbalance') {
-    result.balance = await getBalance(params, web3, contractAddress, abiArray)
+    if (params.tokenName === '*') {
+      result.balance = {}
+      const tokens = Object.keys(ERC20_ADDR)
+      const start = params.from
+      const end = params.to
+      for(let i = start ; i < end ; i++) {
+        const smartcontractInfo = {};
+        smartcontractInfo.abi = await getAbi(tokens[i])
+        smartcontractInfo.contractAddress = ERC20_ADDR[tokens[i]]
+        result.balance[tokens[i]] = await getBalance(params, web3, smartcontractInfo.contractAddress, smartcontractInfo.abi)
+      }
+    } else {
+      const smartcontractInfo = {};
+      smartcontractInfo.abi = await getAbi(params.tokenName)
+      smartcontractInfo.contractAddress = getContractAddress(params.tokenName)
+      result.balance = await getBalance(params, web3, smartcontractInfo.contractAddress, smartcontractInfo.abi)
+    }
 
   } else if (params.do === 'createaccount') {
     // 어떻게 하는것일까 ...
-  } else {
+  } else if (params.do === 'gettransaction') {
     result.transaction = await getTransaction(params, web3)
     
+  } else {
+    // get count of tokens
+    const tokens = Object.keys(ERC20_ADDR)
+    result.count = tokens.length
   }
 
   if(isEmpty(result)) {
@@ -50,6 +69,15 @@ async function erctokens(params) {
   
 }
 
+function getContractAddress(token) {
+  contractAddress = ERC20_ADDR[token]
+  return contractAddress
+}
+
+async function getAbi(token) {
+  abiArray = await JSON.parse(fs.readFileSync(path.resolve(__dirname+'/../../erc_abis', `./${token}-contract-abi.json`), 'utf-8'))
+  return abiArray
+}
 
 function isEmpty(obj) {
   return Object.keys(obj).length === 0
@@ -110,12 +138,29 @@ function sendTransaction(params, web3, gasInfo, nonce, contractAddress, abiArray
 
 }
 
-async function getBalance(params, web3, contractAddress, abiArray) {
-  const contract = new web3.eth.Contract(abiArray, contractAddress, {
-      from: params.frompubKey
+function getBalance(params, web3, contractAddress, abiArray) {
+
+  // 이 방법으로 해야 됨.
+  return new Promise((resolve, reject) => {
+    var fromPubKey = params.frompubKey;  
+    var addr = fromPubKey;
+    var contractAddr = contractAddress;
+    var tknAddress = (addr).substring(2)
+    var contractData = ('0x70a08231000000000000000000000000' + tknAddress)
+    web3.eth.call({
+      to: contractAddr, 
+      data: contractData 
+    },
+    function(err, result) {
+      if (result) {                
+        resolve(web3.utils.fromWei(result));
+      }
+      else {
+        reject(err);
+        console.log(err);
+      }
+    });
   })
-  balance = await contract.methods.balanceOf(params.frompubKey).call()
-  return web3.utils.fromWei(balance)
 }
 
 async function getTransaction(params, web3) {
