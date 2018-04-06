@@ -64,24 +64,6 @@ async function requestToBittrex(uri, data, requestBody) {
     return response
 }
 
-function makeResult(bittrexResult) {
-    const result = {}
-    const bittrexObject = result['bittrex'] = {}
-
-    for(let i = 0; i < bittrexResult.length; i++) {
-        const currencyObject = bittrexResult[i]
-        const currencyName = currencyObject['Currency'].toLowerCase()
-
-        bittrexObject[currencyName] = {
-            available: currencyObject['Available'],
-            pending: currencyObject['Pending'],
-            balance: currencyObject['Balance'],
-            address: currencyObject['CryptoAddress']
-        }
-    }
-
-    return result
-}
 
 exports.getbalances = getbalances
 exports.getaddress = getaddress
