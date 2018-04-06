@@ -51,7 +51,9 @@ async function erctokens(params) {
     }
 
   } else if (params.do === 'createaccount') {
-    // 어떻게 하는것일까 ...
+    // 새로운 eth 계정을 만들어서 보내주는 방식 사용
+    result.account = await createAccount(web3)
+    // TODO 기존에 가지고 있는 eth 계정을 가져와서 연결 시켜주는 방식
   } else if (params.do === 'gettransaction') {
     result.transaction = await getTransaction(params, web3)
     
@@ -66,7 +68,6 @@ async function erctokens(params) {
   } else {
     return result
   }
-  
 }
 
 function getContractAddress(token) {
@@ -82,7 +83,6 @@ async function getAbi(token) {
 function isEmpty(obj) {
   return Object.keys(obj).length === 0
 }
-
 
 function getGasLimit(web3) {
   return new Promise((resolve, reject) => {
@@ -100,6 +100,12 @@ function getGasPrice(web3) {
   })
 }
 
+function createAccount(web3) {
+  return new Promise((resolve, reject) => {
+    const account = web3.eth.accounts.create(web3.utils.randomHex(32))
+    resolve(account)
+  })
+}
 
 function sendTransaction(params, web3, gasInfo, nonce, contractAddress, abiArray) {
 
@@ -140,7 +146,6 @@ function sendTransaction(params, web3, gasInfo, nonce, contractAddress, abiArray
 
 function getBalance(params, web3, contractAddress, abiArray) {
 
-  // 이 방법으로 해야 됨.
   return new Promise((resolve, reject) => {
     var fromPubKey = params.frompubKey;  
     var addr = fromPubKey;

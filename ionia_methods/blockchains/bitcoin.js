@@ -27,10 +27,10 @@ async function bitcoin(params, callback) {
 
   } else if (params.do === 'listtransaction') {
     result.transactions = await getListTransactions(params, kapitalize)
-  } else {
+  } else if (params.do === 'gettransaction') {
     result.transaction = await getTransaction(params, kapitalize)
     
-  }
+  } else {}
 
   if(isEmpty(result)) {
     return undefined
@@ -74,7 +74,6 @@ function sendTransaction(params, kap) {
       if(err) {
         reject(err)
       } else {
-        console.log(result)
         resolve(result)
       }
     })
@@ -138,7 +137,6 @@ function importPrivateKey(params, privkey, kap) {
         console.log(err)
         reject(err)
       } else {
-        console.log('import result : ', result)
         resolve(result)
       }
     })

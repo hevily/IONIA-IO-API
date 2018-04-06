@@ -28,10 +28,10 @@ async function ethereum(params) {
   } else if (params.do === 'getbalance') {
     result.balance = await getBalance(params, web3)
 
-  } else {
+  } else if (params.do === 'gettransaction') {
     result.transaction = await getTransaction(params, web3)
-    
-  }
+
+  } else {}
 
   if(isEmpty(result)) {
     return undefined
@@ -61,19 +61,17 @@ function getGasPrice(web3) {
   })
 }
 
-
 function sendTransaction(params, web3, gasInfo, nonce) {
   const fromPubKey = params.fromPubKey
   const fromPriKey = params.fromPriKey.substr(2)
   const toPubKey = params.toPubKey
-
   const privateKey = Buffer.from(fromPriKey, 'hex')
-
   const nonceHex = web3.utils.toHex(nonce)
   const gasLimit = web3.utils.toHex(gasInfo.gasLimit)
   const gasPrice = web3.utils.toHex(gasInfo.gasPrice)
   const value = web3.utils.toHex(web3.utils.toWei(params.value))
   const data = web3.utils.toHex(params.data)
+  const chainid = 1;
 
   const txParams = {
     nonce: nonceHex,
