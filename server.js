@@ -28,7 +28,7 @@ app.use(cors())
 module.exports = passport
 const methodDirectories = finder.in('./methods').findDirectories()
 
-function findMethods(methodDirectories) {
+function findAndRegistMethods(methodDirectories) {
     for(let i = 0; i < methodDirectories.length; i++) {
         const methodDirectory = methodDirectories[i]
 
@@ -41,18 +41,17 @@ function findMethods(methodDirectories) {
 
             for(let k = 0; k < functionNames.length; k++) {
                 const functionName = functionNames[k]
-                jsonRpc.registMethod(functionName, file[functionName])
+                jsonRpc.findAndRegistMethods(functionName, file[functionName])
             }
         }
 
         if(directories.length > 0) {
-            findMethods(directories)
+            findAndRegistMethods(directories)
         }
     }
 }
 
-findMethods(methodDirectories)
-
+findAndRegistMethods(methodDirectories)
 app.use(jsonRpc.app())
 
 const PORT = 3000
