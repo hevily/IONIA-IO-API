@@ -41,7 +41,7 @@ function findAndRegistMethods(methodDirectories) {
 
             for(let k = 0; k < functionNames.length; k++) {
                 const functionName = functionNames[k]
-                jsonRpc.findAndRegistMethods(functionName, file[functionName])
+                jsonRpc.registMethod(functionName, file[functionName])
             }
         }
 
