@@ -1,5 +1,6 @@
 const koa = require('koa')
 const bodyParser = require('koa-bodyparser')
+const cors = require('@koa/cors')
 const fs    = require('fs')
 const passport = require('koa-passport')
 const session = require('koa-session')
@@ -21,6 +22,7 @@ app.use(bodyParser({
       }
 }))
 
+app.use(cors())
 app.use(jsonRpc.app())
 
 const PORT = 3000
