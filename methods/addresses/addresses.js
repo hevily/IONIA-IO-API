@@ -72,7 +72,7 @@ async function getaddresses(params) {
     const exchangeFunctions = []
     
     for(const exchange in exchanges) {
-        exchangeFunctions.push(exchanges[exchange].getaddresses(testData))
+        exchangeFunctions.push(exchanges[exchange].getaddress(testData))
     }
     
     const exchangeResults = await Promise.all(exchangeFunctions)
