@@ -1,7 +1,7 @@
-const exchanges = require('./exchanges')
+const exchanges = require('../../common/api')
 
 
-async function getbalances(params) {
+async function getaddresses(params) {
     // TODO: 계정으로 DB에서 거래소 정보(apikey, secretkey ...) 조회
     const testData = {
         bittrex: {
@@ -66,11 +66,13 @@ async function getbalances(params) {
             secretKey: ''
         }
     }
+
+    testData.currency = params.currency
     
     const exchangeFunctions = []
     
     for(const exchange in exchanges) {
-        exchangeFunctions.push(exchanges[exchange].getbalances(testData))
+        exchangeFunctions.push(exchanges[exchange].getaddresses(testData))
     }
     
     const exchangeResults = await Promise.all(exchangeFunctions)
@@ -97,4 +99,4 @@ function makeResponse(exchangeResults) {
     return response
 }
 
-exports.getbalances = getbalances
+exports.getaddresses = getaddresses

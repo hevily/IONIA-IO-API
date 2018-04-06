@@ -1,5 +1,5 @@
-const http = require('../../../ionia_modules/http')
-const crypto = require('../../../ionia_modules/crypto')
+const http = require('../modules/http')
+const crypto = require('../modules/crypto')
 
 
 async function getbalances(data) {
@@ -21,7 +21,7 @@ async function getbalances(data) {
     }
 
     const response = await http.request(baseUrl + serviceUri, 'POST', headers, requestBody)
-
+    console.log(response)
     return response.message === undefined ? makeResult(response) : {}
 }
 

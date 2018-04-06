@@ -1,8 +1,9 @@
-const http = require('../../../ionia_modules/http')
-const crypto = require('../../../ionia_modules/crypto')
+const http = require('../modules/http')
+const crypto = require('../modules/crypto')
 const querystring = require('querystring')
 
 const url = 'https://api.coinone.co.kr/v2/account/balance/'
+
 
 async function getbalances(data) {
     const requestBody = {

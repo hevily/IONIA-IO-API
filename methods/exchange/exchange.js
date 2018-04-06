@@ -1,6 +1,6 @@
-const http = require('../../ionia_modules/http')
+const http = require('../../common/modules/http')
 const host = 'https://shapeshift.io'
-const db = require('./../../db_connection');
+const db = require('../../common/modules/db');
 
 async function getexchangeablecoins(params) {
     const uri = '/getcoins';
@@ -17,7 +17,7 @@ async function getexchangeablecoins(params) {
         }
     }
 
-    return result;
+    return result
 }
 
 exports.getexchangeablecoins = getexchangeablecoins

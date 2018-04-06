@@ -4,13 +4,13 @@ const cors = require('@koa/cors')
 const fs    = require('fs')
 const passport = require('koa-passport')
 const session = require('koa-session')
-module.exports = passport
-const jsonRpc = require('./methods')
+const finder = require('fs-finder')
+const jsonRpc = require('./common/modules/jsonRpc')
 require('./mongo/index')
-const db = require('./db_connection')
+const db = require('./common/modules/db')
 
 const app = new koa()
-require('./ionia_modules/auth')
+require('./common/modules/auth')
 app.keys = ['secret']
 app.use(session({}, app))
 app.use(passport.initialize())
@@ -18,11 +18,41 @@ app.use(passport.session())
 
 app.use(bodyParser({
     extendTypes: {
-        json: ['application/json-rpc'] // will parse application/x-javascript type body as a JSON string 
+        json: ['application/json-rpc']
       }
 }))
 
 app.use(cors())
+
+// bind methods
+module.exports = passport
+const methodDirectories = finder.in('./methods').findDirectories()
+
+function findMethods(methodDirectories) {
+    for(let i = 0; i < methodDirectories.length; i++) {
+        const methodDirectory = methodDirectories[i]
+
+        const files = finder.in(methodDirectory).findFiles()
+        const directories = finder.in(methodDirectory).findDirectories()
+
+        for(let j = 0; j < files.length; j++) {
+            const file = require(files[j]);
+            const functionNames = Object.keys(file)
+
+            for(let k = 0; k < functionNames.length; k++) {
+                const functionName = functionNames[k]
+                jsonRpc.registMethod(functionName, file[functionName])
+            }
+        }
+
+        if(directories.length > 0) {
+            findMethods(directories)
+        }
+    }
+}
+
+findMethods(methodDirectories)
+
 app.use(jsonRpc.app())
 
 const PORT = 3000

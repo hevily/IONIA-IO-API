@@ -1,5 +1,6 @@
-const http = require('../../../ionia_modules/http')
-const crypto = require('../../../ionia_modules/crypto')
+const http = require('../modules/http')
+const crypto = require('../modules/crypto')
+
 
 async function getbalances(data) {
     const nonce = new Date().getTime()

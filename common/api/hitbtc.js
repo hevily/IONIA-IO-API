@@ -1,4 +1,4 @@
-const http = require('../../../ionia_modules/http')
+const http = require('../modules/http')
 
 
 async function getbalances(data) {

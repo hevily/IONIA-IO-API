@@ -1,5 +1,5 @@
 const mysql = require('promise-mysql')
-const PRIVACY = require('./privacy.json')
+const PRIVACY = require('../../privacy.json')
 
 
 const config = {
@@ -11,6 +11,6 @@ const config = {
     connectionLimit: 100,
 };
 
-const pool = mysql.createPool(config)
+const connection = mysql.createConnection(config)
 
-module.exports = pool;
+module.exports = connection;

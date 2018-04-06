@@ -1,9 +1,9 @@
-const PRIVACY = require('./../../privacy.json')
+const PRIVACY = require('../../privacy.json')
 const Web3 = require('web3')
 const EthereumTx = require('ethereumjs-tx')
 const fs = require('fs')
 const path = require('path')
-const ERC20_ADDR = require('./../../erc_contract_address.json')
+const ERC20_ADDR = require('../../common/smart_contracts/erc20_address.json')
 
 async function erctokens(params) {
   const mainnet = `http://${PRIVACY.BLOCKCHAINS.ETHEREUM.IP}:${PRIVACY.BLOCKCHAINS.ETHEREUM.PORT}`

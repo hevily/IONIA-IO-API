@@ -1,5 +1,5 @@
-const http = require('../../../ionia_modules/http')
-const crypto = require('../../../ionia_modules/crypto')
+const http = require('../modules/http')
+const crypto = require('../modules/crypto')
 
 const url = 'https://api.livecoin.net/payment/balances'
 
