@@ -30,8 +30,11 @@ async function request(url, method='GET', headers={}, dataOrParams={}, auth={}) 
         response = await axios(requestOptions)
         response = response.data
     } catch(error) {
-        response = error.response.data
-        console.log(error.response.data)
+        if(error.response[data] !== undefined) {
+            response = error.response.data
+        }
+
+        console.log(response)
     }
 
     return response
