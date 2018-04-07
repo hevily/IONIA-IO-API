@@ -12,7 +12,7 @@ async function getbalances(data) {
 
     const balances = await requestToBitthumb(uri, data, requestBody)
 
-    return balances.status === '0000' ? makeResult(balances.data) : {}
+    return balances.status === '0000' ? makeBalancesResult(balances.data) : {}
 }
 
 async function getaddress(data) {
@@ -47,7 +47,7 @@ async function requestToBitthumb(uri, data, requestBody) {
     return response
 }
 
-function makeResult(balancesData) {
+function makeBalancesResult(balancesData) {
     //available: currencyObject['Available'],
     //pending: currencyObject['Pending'],
     //balance: currencyObject['Balance'],
