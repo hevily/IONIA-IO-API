@@ -1,4 +1,4 @@
-const exchanges = require('../../common/api')
+const apis = require('../../common/api')
 
 
 async function getaddresses(params) {
@@ -8,7 +8,7 @@ async function getaddresses(params) {
             apiKey: '',
             secretKey: ''
         },
-        poloniex: {
+        bitthumb: {
             apiKey: '',
             secretKey: ''
         },
@@ -16,7 +16,7 @@ async function getaddresses(params) {
             apiKey: '',
             secretKey: ''
         },
-        bitthumb: {
+        poloniex: {
             apiKey: '',
             secretKey: ''
         },
@@ -29,11 +29,6 @@ async function getaddresses(params) {
             secretKey: ''
         },
         bitfinex: {
-            apiKey: '',
-            secretKey: ''
-        },
-        huobi: {
-            userId: '',
             apiKey: '',
             secretKey: ''
         },
@@ -53,14 +48,6 @@ async function getaddresses(params) {
             apiKey: '',
             secretKey: ''
         },
-        bitmex: {
-            apiKey: '',
-            secretKey: ''
-        },
-        okex: {
-            apiKey: '',
-            secretKey: ''
-        },
         qryptos :{
             apiKey: '',
             secretKey: ''
@@ -68,11 +55,20 @@ async function getaddresses(params) {
     }
 
     testData.currency = params.currency
+
+    const apisExchangeName = []
+
+    for(const exchange in apis) {
+        apisExchangeName.push(exchange)
+    }
     
+    const exchangeNames = params.exchanges !== undefined && params.exchanges.length > 0 ? params.exchanges : apisExchangeName
     const exchangeFunctions = []
-    
-    for(const exchange in exchanges) {
-        exchangeFunctions.push(exchanges[exchange].getaddress(testData))
+
+    for(const exchangeName of exchangeNames) {
+        if(apis[exchangeName].getaddress !== undefined) {
+            exchangeFunctions.push(apis[exchaexchangeNamenge].getaddress(testData))
+        }
     }
     
     const exchangeResults = await Promise.all(exchangeFunctions)

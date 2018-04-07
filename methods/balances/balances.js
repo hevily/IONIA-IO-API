@@ -1,4 +1,4 @@
-const exchanges = require('../../common/api')
+const apis = require('../../common/api')
 
 
 async function getbalances(params) {
@@ -66,11 +66,20 @@ async function getbalances(params) {
             secretKey: ''
         }
     }
+
+    const apisExchangeName = []
+
+    for(const exchange in apis) {
+        apisExchangeName.push(exchange)
+    }
     
+    const exchangeNames = params.exchanges !== undefined && params.exchanges.length > 0 ? params.exchanges : apisExchangeName
     const exchangeFunctions = []
     
-    for(const exchange in exchanges) {
-        exchangeFunctions.push(exchanges[exchange].getbalances(testData))
+    for(const exchangeName in exchangeNames) {
+        if(apis[exchangeName].getbalances !== undefined) {
+            exchangeFunctions.push(apis[exchangeName].getbalances(testData))
+        }
     }
     
     const exchangeResults = await Promise.all(exchangeFunctions)
