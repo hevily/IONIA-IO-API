@@ -4,10 +4,37 @@ const crypto = require('../modules/crypto')
 const url = 'https://poloniex.com/tradingApi'
 
 async function getbalances(data) {
-    // nonce 이슈로 병렬처리 불가능
     const balances = await requestToPoloniex(data, 'returnBalances')
+    
+    const result = {}
 
-    return balances.error === undefined ? makeResult(balances) : {}
+    if(balances.error === undefined) {
+        const poloniexObject = result['poloniex'] = {}
+        
+        for(const tokenName in balances) {
+            poloniexObject[tokenName.toLowerCase()] = {
+                available: parseFloat(balances[tokenName]),
+                balance: parseFloat(balances[tokenName]),
+                pending: 0,
+                address: depositAddresses[tokenName] === undefined ? null : depositAddresses[tokenName]
+            }
+        }
+    }
+
+    return result
+}
+
+async function getaddress(data) {
+    const addresses = await requestToPoloniex(data, 'returnDepositAddresses')
+
+    const result = {}
+
+    if(addresses.error === undefined) {
+        const poloniexObject = result['poloniex'] = {}
+        poloniexObject[data.currency] = addresses[data.currency]
+    }
+
+    return result
 }
 
 async function requestToPoloniex(data, method) {
@@ -26,19 +53,5 @@ async function requestToPoloniex(data, method) {
     return response
 }
 
-function makeResult(balances) {
-    const result = {}
-    const poloniexObject = result['poloniex'] = {}
-
-    for(const tokenName in balances) {
-        poloniexObject[tokenName.toLowerCase()] = {
-            available: parseFloat(balances[tokenName]),
-            balance: parseFloat(balances[tokenName]),
-            pending: 0
-        }
-    }
-
-    return result
-}
-
 exports.getbalances = getbalances
+exports.getaddress = getaddress
