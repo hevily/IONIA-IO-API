@@ -10,11 +10,12 @@ async function getbalances(data) {
     }
     const uri = '/api/v1.1/account/getbalances'
 
-    const response = await requestToBittrex(uri, data, requestBody)
+    const balances = await requestToBittrex(uri, data, requestBody)
 
     const result = {}
 
-    if(response.success === true) {
+    if(balances.success === true) {
+        const bittrexResult = balances.result
         const bittrexObject = result['bittrex'] = {}
         
         for(let i = 0; i < bittrexResult.length; i++) {

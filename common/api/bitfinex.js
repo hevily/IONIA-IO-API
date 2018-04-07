@@ -5,15 +5,16 @@ const crypto = require('../modules/crypto')
 async function getbalances(data) {
     const uri = '/v1/balances'
     const requestBody = {
-        request: serviceUri,
+        request: uri,
         nonce: Date.now().toString()
     }
 
     const balances = await requestToBitfinex(uri, data, requestBody)
-
+    
     const result = {}
 
-    if(response.message === undefined) {
+    if(balances.message === undefined) {
+        const tokens = balances.data
         const bitfinexObject = result['bitfinex'] = {}
 
         for(let i = 0; i < tokens.length; i++) {
