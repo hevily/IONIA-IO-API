@@ -6,9 +6,8 @@ const url = 'https://poloniex.com/tradingApi'
 async function getbalances(data) {
     // nonce 이슈로 병렬처리 불가능
     const balances = await requestToPoloniex(data, 'returnBalances')
-    const depositAddresses = await requestToPoloniex(data, 'returnDepositAddresses')
 
-    return balances.error === undefined && depositAddresses.error === undefined ? makeResult(balances, depositAddresses) : {}
+    return balances.error === undefined ? makeResult(balances) : {}
 }
 
 async function requestToPoloniex(data, method) {
@@ -27,7 +26,7 @@ async function requestToPoloniex(data, method) {
     return response
 }
 
-function makeResult(balances, depositAddresses) {
+function makeResult(balances) {
     const result = {}
     const poloniexObject = result['poloniex'] = {}
 
@@ -35,8 +34,7 @@ function makeResult(balances, depositAddresses) {
         poloniexObject[tokenName.toLowerCase()] = {
             available: parseFloat(balances[tokenName]),
             balance: parseFloat(balances[tokenName]),
-            pending: 0,
-            address: depositAddresses[tokenName] === undefined ? null : depositAddresses[tokenName]
+            pending: 0
         }
     }
 
