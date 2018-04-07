@@ -69,7 +69,7 @@ async function requestToBibox(uri, data, requestBody) {
     const host = 'https://api.bibox.com'
 
     const response = await http.request(host + uri, 'POST', {}, requestBody)
-    console.log('===', response)
+
     return response
 }
 
