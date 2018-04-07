@@ -4,7 +4,8 @@ const crypto = require('../modules/crypto')
 const url = 'https://poloniex.com/tradingApi'
 
 async function getbalances(data) {
-    const balances = await requestToPoloniex(data, 'returnBalances')
+    const uri = '/tradingApi'
+    const balances = await requestToPoloniex(uri, data, 'returnBalances')
     
     const result = {}
 
@@ -15,8 +16,7 @@ async function getbalances(data) {
             poloniexObject[tokenName.toLowerCase()] = {
                 available: parseFloat(balances[tokenName]),
                 balance: parseFloat(balances[tokenName]),
-                pending: 0,
-                address: depositAddresses[tokenName] === undefined ? null : depositAddresses[tokenName]
+                pending: 0
             }
         }
     }
@@ -25,7 +25,8 @@ async function getbalances(data) {
 }
 
 async function getaddress(data) {
-    const addresses = await requestToPoloniex(data, 'returnDepositAddresses')
+    const uri = '/tradingApi'
+    const addresses = await requestToPoloniex(uri, data, 'returnDepositAddresses')
 
     const result = {}
 
@@ -37,7 +38,8 @@ async function getaddress(data) {
     return result
 }
 
-async function requestToPoloniex(data, method) {
+async function requestToPoloniex(uri, data, method) {
+    const host = 'https://poloniex.com'
     const requestBody = {
         command: method,
         nonce: new Date().getTime() * 100
@@ -48,7 +50,7 @@ async function requestToPoloniex(data, method) {
         Sign: crypto.hmac('sha512', data.poloniex.secretKey, requestBody).toUpperCase()
     }
 
-    const response = await http.request(url, 'POST', headers, requestBody)
+    const response = await http.request(host + uri, 'POST', headers, requestBody)
     
     return response
 }
