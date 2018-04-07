@@ -1,21 +1,49 @@
 const http = require('../modules/http')
 const crypto = require('../modules/crypto')
 
-const url = 'https://api.livecoin.net/payment/balances'
 
 async function getbalances(data) {
+    const uri = '/payment/balances'
+    const response = await requestToLivecoin(uri, data, {})
     
-    const headers = {
-        'Api-Key': data.livecoin.apiKey,
-        'Sign': crypto.hmac('sha256', data.livecoin.secretKey, {}).toUpperCase()
+    const result = {}
+    if(response.fault === null) {
+        result = makeBalancesResult(response)
     }
 
-    const response = await http.request(url, 'GET', headers)
-
-    return makeResult(response)
+    return result
 }
 
-function makeResult(response) {
+async function getaddress(data) {
+    const uri = '/payment/get/address'
+    const requestBody = {
+        currency: data.currency
+    }
+
+    const response = await requestToLivecoin(uri, data, requestBody)
+    const result = {}
+
+    if(response.fault === null) {
+        result['livecoin'] = {}
+        result.livecoin[data.currency] = response.wallet
+    }
+
+    return result
+}
+
+async function requestToLivecoin(uri, data, requestBody) {
+    const host = 'https://api.livecoin.net'
+    const headers = {
+        'Api-Key': data.livecoin.apiKey,
+        'Sign': crypto.hmac('sha256', data.livecoin.secretKey, requestBody).toUpperCase()
+    }
+
+    const response = await http.request(host + uri, 'GET', headers, requestBody)
+    
+    return response
+}
+
+function makeBalancesResult(response) {
     const result = {}
     const livecoinObject = result['livecoin'] = {}
 
@@ -65,3 +93,4 @@ function sortObjectByKey(requestBody) {
 }
 
 exports.getbalances = getbalances
+exports.getaddress = getaddress
