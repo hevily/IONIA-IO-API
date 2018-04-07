@@ -37,7 +37,7 @@ async function getaddress(data) {
     const requestBody = {
         apikey: data.bittrex.apiKey,
         nonce: new Date().getTime(),
-        currency: data.currency.toUpperCase()
+        currency: data.currency
     }
     const uri = '/api/v1.1/account/getbalance'
 
