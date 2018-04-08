@@ -31,6 +31,8 @@ const methodDirectories = finder.in('./methods').findDirectories()
 function findAndRegistMethods(methodDirectories) {
     for(let i = 0; i < methodDirectories.length; i++) {
         const methodDirectory = methodDirectories[i]
+        const splitedPath = methodDirectory.split('/')
+        const prefix = splitedPath[splitedPath.length - 1]
 
         const files = finder.in(methodDirectory).findFiles()
         const directories = finder.in(methodDirectory).findDirectories()
@@ -41,7 +43,7 @@ function findAndRegistMethods(methodDirectories) {
 
             for(let k = 0; k < functionNames.length; k++) {
                 const functionName = functionNames[k]
-                jsonRpc.registMethod(functionName, file[functionName])
+                jsonRpc.registMethod(`${prefix}_${functionName}`, file[functionName])
             }
         }
 
