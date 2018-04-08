@@ -34,8 +34,8 @@ async function getaddress(data) {
 async function requestToLivecoin(uri, data, requestBody) {
     const host = 'https://api.livecoin.net'
     const headers = {
-        'Api-Key': data.livecoin.apiKey,
-        'Sign': crypto.hmac('sha256', data.livecoin.secretKey, requestBody).toUpperCase()
+        'Api-Key': data.apiKey,
+        'Sign': crypto.hmac('sha256', data.secretKey, requestBody).toUpperCase()
     }
 
     const response = await http.request(host + uri, 'GET', headers, requestBody)

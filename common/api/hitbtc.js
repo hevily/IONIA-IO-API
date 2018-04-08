@@ -41,8 +41,8 @@ async function getaddress(data) {
 async function requestToHitbtc(uri, data, requestBody) {
     const host = 'https://api.hitbtc.com'
     const auth = {
-        username: data.hitbtc.apiKey,
-        password: data.hitbtc.secretKey
+        username: data.apiKey,
+        password: data.secretKey
     }
 
     const response = await http.request(host + uri, 'GET', {}, requestBody, auth)

@@ -6,9 +6,9 @@ async function getbalances(data) {
     const uri = '/api/v1/userinfo.do'
 
     const requestBody = {
-        api_key: data.okex.apiKey
+        api_key: data.apiKey
     }
-    requestBody.sign = crypto.hash('md5', `api_key=${requestBody.api_key}&secret_key=${data.okex.secretKey}`).toUpperCase()
+    requestBody.sign = crypto.hash('md5', `api_key=${requestBody.api_key}&secret_key=${data.secretKey}`).toUpperCase()
 
     const response = await requestToOkex(uri, data, requestBody)
 

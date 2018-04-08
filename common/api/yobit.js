@@ -37,8 +37,8 @@ async function getaddress(data) {
 async function requestToYobit(uri, data, requestBody) {
     const host = 'https://yobit.net'
     const headers = {
-        Key: data.yobit.apiKey,
-        Sign: crypto.hmac('sha512', data.yobit.secretKey, requestBody)
+        Key: data.apiKey,
+        Sign: crypto.hmac('sha512', data.secretKey, requestBody)
     }
 
     const response = await http.request(host + uri, 'POST', headers, requestBody)

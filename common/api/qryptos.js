@@ -47,11 +47,11 @@ async function requestToQryptos(uri, data) {
     const payload = {
         path: uri,
         nonce: new Date().getTime(),
-        token_id: data.qryptos.apiKey
+        token_id: data.apiKey
     };
     const headers = {
         'X-Quoine-API-Version': '2',
-        'X-Quoine-Auth': crypto.hmac('hs256', data.qryptos.secretKey, payload),
+        'X-Quoine-Auth': crypto.hmac('hs256', data.secretKey, payload),
         'Content-Type': 'application/json'
     }
 

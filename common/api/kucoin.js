@@ -51,11 +51,11 @@ async function getaddress(data) {
 async function requestToKucoin(uri, data, requestParams) {
     const host = 'https://api.kucoin.com'
     const headers = {
-        'KC-API-KEY': data.kucoin.apiKey,
+        'KC-API-KEY': data.apiKey,
         'KC-API-NONCE': new Date().getTime()
     }
     const strForSign = crypto.encode('base64', uri + '/' + headers['KC-API-NONCE'] + '/' + querystring.stringify(requestParams))
-    headers['KC-API-SIGNATURE'] = crypto.hmac('sha256', data.kucoin.secretKey, strForSign)
+    headers['KC-API-SIGNATURE'] = crypto.hmac('sha256', data.secretKey, strForSign)
     const response = await http.request(host + uri, 'GET', headers, requestParams)
 
     return response

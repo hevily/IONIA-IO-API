@@ -58,10 +58,10 @@ async function requestToBitfinex(uri, data, requestBody) {
     const host = 'https://api.bitfinex.com'
 
     const payload = crypto.encode('base64', JSON.stringify(requestBody))
-    const signature = crypto.hmac('sha384', data.bitfinex.secretKey, payload)
+    const signature = crypto.hmac('sha384', data.secretKey, payload)
 
     const headers = {
-        'X-BFX-APIKEY': data.bitfinex.apiKey,
+        'X-BFX-APIKEY': data.apiKey,
         'X-BFX-PAYLOAD': payload,
         'X-BFX-SIGNATURE': signature
     }

@@ -13,8 +13,8 @@ async function getbalances(data) {
     }]
     const requestBody = {
         cmds: JSON.stringify(cmds),
-        apikey: data.bibox.apiKey,
-        sign: crypto.hmac('md5', data.bibox.secretKey, JSON.stringify(cmds))
+        apikey: data.apiKey,
+        sign: crypto.hmac('md5', data.secretKey, JSON.stringify(cmds))
     }
 
     const balances = await requestToBibox(uri, data, requestBody)
@@ -49,8 +49,8 @@ async function getaddress(data) {
     }]
     const requestBody = {
         cmds: JSON.stringify(cmds),
-        apikey: data.bibox.apiKey,
-        sign: crypto.hmac('md5', data.bibox.secretKey, JSON.stringify(cmds))
+        apikey: data.apiKey,
+        sign: crypto.hmac('md5', data.secretKey, JSON.stringify(cmds))
     }
 
     const addresses = await requestToBibox(uri, data, requestBody)

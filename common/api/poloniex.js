@@ -46,8 +46,8 @@ async function requestToPoloniex(uri, data, method) {
     }
 
     const headers = {
-        Key: data.poloniex.apiKey,
-        Sign: crypto.hmac('sha512', data.poloniex.secretKey, requestBody).toUpperCase()
+        Key: data.apiKey,
+        Sign: crypto.hmac('sha512', data.secretKey, requestBody).toUpperCase()
     }
 
     const response = await http.request(host + uri, 'POST', headers, requestBody)

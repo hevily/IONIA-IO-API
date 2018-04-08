@@ -4,13 +4,13 @@ const querystring = require('querystring');
 
 
 async function getbalances(data) {
-    const url = `https://api.huobi.pro/v1/account/accounts/${data.huobi.userId}/balance`
+    const url = `https://api.huobi.pro/v1/account/accounts/${data.userId}/balance`
     const requestBody = {
-        'AccessKeyId': data.huobi.apiKey,
+        'AccessKeyId': data.apiKey,
         'SignatureMethod': 'HmacSHA256',
         'SignatureVersion': 2,
         'Timestamp': getUTCTimestampFromNow(),
-        'account-id': data.huobi.userId,
+        'account-id': data.userId,
     };
 
     const pars = [];
@@ -23,11 +23,9 @@ async function getbalances(data) {
     }
 
     var p = pars.sort().join("&");
-    var meta = ['GET', 'api.huobi.pro', `/v1/account/accounts/${data.huobi.userId}/balance`, p].join('\n');
+    var meta = ['GET', 'api.huobi.pro', `/v1/account/accounts/${data.userId}/balance`, p].join('\n');
     
-    // const payload = `GET\napi.huobi.pro\n/v1/account/accounts/${data.huobi.userId}/balance\n${querystring.stringify(requestBody)}`;
-    var hash = crypto.hmac('sha256', data.huobi.secretKey, meta);
-    // var hash = HmacSHA256(data.huobi.secretKey, payload);
+    var hash = crypto.hmac('sha256', data.secretKey, meta);
     requestBody['Signature'] = crypto.encode('base64', hash);
 
     const response = await http.request(url + '?' + querystring.stringify(requestBody), 'GET', headers);

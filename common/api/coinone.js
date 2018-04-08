@@ -8,7 +8,7 @@ const url = 'https://api.coinone.co.kr/v2/account/balance/'
 async function getbalances(data) {
     const uri = '/v2/account/balance/'
     const requestBody = {
-        access_token: data.coinone.apiKey,
+        access_token: data.apiKey,
         nonce: new Date().getTime()
     }
 
@@ -38,7 +38,7 @@ async function getbalances(data) {
 async function getaddress(data) {
     const uri = '/v2/account/deposit_address/'
     const requestBody = {
-        access_token: data.coinone.apiKey,
+        access_token: data.apiKey,
         nonce: new Date().getTime()
     }
 
@@ -62,7 +62,7 @@ async function requestToCoinone(uri, data, requestBody) {
     const headers = {
         'Content-type': 'application-json',
         'X-COINONE-PAYLOAD': payload,
-        'X-COINONE-SIGNATURE': crypto.hmac('sha512', data.coinone.secretKey.toUpperCase(), payload)
+        'X-COINONE-SIGNATURE': crypto.hmac('sha512', data.secretKey.toUpperCase(), payload)
     }
 
     const response = await http.request(host + uri, 'POST', headers, payload)

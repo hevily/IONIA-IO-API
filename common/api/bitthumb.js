@@ -37,8 +37,8 @@ async function requestToBitthumb(uri, data, requestBody) {
     const host = 'https://api.bithumb.com'
     const nonce = new Date().getTime()
     const headers = {
-        'Api-Key': data.bitthumb.apiKey,
-        'Api-Sign': crypto.encode('base64', crypto.hmac('sha512', data.bitthumb.secretKey, `${uri}\0${querystring.stringify(requestBody)}\0${nonce}`)),
+        'Api-Key': data.apiKey,
+        'Api-Sign': crypto.encode('base64', crypto.hmac('sha512', data.secretKey, `${uri}\0${querystring.stringify(requestBody)}\0${nonce}`)),
         'Api-Nonce': nonce
     }
 

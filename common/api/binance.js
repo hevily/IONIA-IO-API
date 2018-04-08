@@ -51,10 +51,10 @@ async function getaddress(data) {
 async function requestToBinance(uri, data, requestBody) {
     const host = 'https://api.binance.com'
     const headers = {
-        'X-MBX-APIKEY': data.binance.apiKey
+        'X-MBX-APIKEY': data.apiKey
     }
     
-    requestBody.signature = crypto.hmac('sha256', data.binance.secretKey, requestBody)
+    requestBody.signature = crypto.hmac('sha256', data.secretKey, requestBody)
 
     const response = await http.request(host + uri, 'GET', headers, requestBody)
 

@@ -5,7 +5,7 @@ const querystring = require('querystring')
 
 async function getbalances(data) {
     const requestBody = {
-        apikey: data.bittrex.apiKey,
+        apikey: data.apiKey,
         nonce: new Date().getTime()
     }
     const uri = '/api/v1.1/account/getbalances'
@@ -26,7 +26,6 @@ async function getbalances(data) {
                 available: currencyObject['Available'],
                 pending: currencyObject['Pending'],
                 balance: currencyObject['Balance'],
-                address: currencyObject['CryptoAddress']
             }
         }
     }
@@ -36,7 +35,7 @@ async function getbalances(data) {
 
 async function getaddress(data) {
     const requestBody = {
-        apikey: data.bittrex.apiKey,
+        apikey: data.apiKey,
         nonce: new Date().getTime(),
         currency: data.currency
     }
@@ -57,7 +56,7 @@ async function getaddress(data) {
 async function requestToBittrex(uri, data, requestBody) {
     const host = 'https://bittrex.com'
     const headers = {
-        apisign: crypto.hmac('sha512', data.bittrex.secretKey, host + uri + '?' + querystring.stringify(requestBody))
+        apisign: crypto.hmac('sha512', data.secretKey, host + uri + '?' + querystring.stringify(requestBody))
     }
 
     const response = await http.request(host + uri, 'GET', headers, requestBody)
