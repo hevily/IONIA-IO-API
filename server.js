@@ -6,7 +6,7 @@ const passport = require('koa-passport')
 const session = require('koa-session')
 const finder = require('fs-finder')
 const jsonRpc = require('./common/modules/jsonRpc')
-require('./mongo/index')
+require('./mongo')
 const db = require('./common/modules/db')
 
 const app = new koa()
