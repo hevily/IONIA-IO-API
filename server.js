@@ -7,7 +7,6 @@ const session = require('koa-session')
 const finder = require('fs-finder')
 const jsonRpc = require('./common/modules/jsonRpc')
 const privacy = require('./privacy.json')
-require('./mongo')
 const db = require('./common/modules/db')
 
 const app = new koa()
@@ -32,14 +31,14 @@ const methodDirectories = finder.in('./methods').findDirectories()
 for(const methodDirectory of methodDirectories) {
     const splitedPath = methodDirectory.split('/')
     const prefix = splitedPath[splitedPath.length - 1]
-
     const files = finder.in(methodDirectory).findFiles()
 
     for(const file of files) {
-        const functionNames = Object.keys(file)
+        const functions = require(file)
+        const functionNames = Object.keys(functions)
 
         for(const functionName of functionNames) {
-            jsonRpc.registMethod(`${prefix}_${functionName}`, file[functionName])
+            jsonRpc.registMethod(`${prefix}_${functionName}`, functions[functionName])
         }
     }
 }
