@@ -11,7 +11,7 @@ const db = require('./common/modules/db')
 
 const app = new koa()
 require('./common/modules/auth')
-app.keys = [privacy.SESSION.SECRET_KEY]
+app.keys = [privacy.SECRET_KEY]
 app.use(session({}, app))
 app.use(passport.initialize())
 app.use(passport.session())
