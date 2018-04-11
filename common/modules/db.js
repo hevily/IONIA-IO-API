@@ -1,8 +1,8 @@
-const mysql = require('promise-mysql')
+const knex = require('knex')
 const PRIVACY = require('../../privacy.json')
 
 
-const db = require('knex')({
+const db = knex({
     client: 'mysql',
     connection: {
         host : PRIVACY.MYSQL.HOST,
