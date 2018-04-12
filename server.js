@@ -30,7 +30,7 @@ for(const methodDirectory of methodDirectories) {
     for(const file of files) {
         const functions = require(file)
         const functionNames = Object.keys(functions)
-
+        
         for(const functionName of functionNames) {
             jsonRpc.registMethod(`${prefix}_${functionName}`, functions[functionName])
         }
