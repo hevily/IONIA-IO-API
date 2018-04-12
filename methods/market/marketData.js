@@ -5,10 +5,10 @@ async function getMarketData(params) {
     const url = 'https://api.coinmarketcap.com/v1/ticker/'
     const markets = await http.request(url)
 
-    const results = []
+    const data = []
 
     for(const market of markets) {
-        results.push({
+        data.push({
             id: market.id,
             name: market.name,
             symbol: market.symbol,
@@ -18,7 +18,9 @@ async function getMarketData(params) {
         })
     }
 
-    return results
+    return {
+        data: data
+    }
 }
 
 exports.getMarketData = getMarketData
