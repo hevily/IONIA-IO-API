@@ -138,7 +138,6 @@ function getBalanceAction(params, kap) {
   return new Promise((resolve, reject) => {
     kap.exec('getbalance', params.account, function(err, result) {
       if(err) {
-        console.log(err)
         reject(err)
       } else {
         resolve(result.result)
