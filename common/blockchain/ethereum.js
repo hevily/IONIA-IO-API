@@ -1,44 +1,13 @@
 const PRIVACY = require('./../../privacy.json')
 const Web3 = require('web3')
 const EthereumTx = require('ethereumjs-tx')
+const mainnet = `http://${PRIVACY.BLOCKCHAINS.ETHEREUM.IP}:${PRIVACY.BLOCKCHAINS.ETHEREUM.PORT}`
+let web3
 
-async function ethereum(params) {
-  const mainnet = `http://${PRIVACY.BLOCKCHAINS.ETHEREUM.IP}:${PRIVACY.BLOCKCHAINS.ETHEREUM.PORT}`
-  let web3
-
-  if (typeof web3 !== 'undefined') {
-    web3 = new Web3(web3.currentProvider)
-  } else {
-    web3 = new Web3(new Web3.providers.HttpProvider(mainnet))
-  }
-
-  let result = {}
-  
-  if (params.do === 'sendtransaction') {
-    const gasInfo = {}
-    gasInfo.gasLimit = await getGasLimit(web3)
-    gasInfo.gasPrice = await getGasPrice(web3)
-    // private nonce 
-    const nonce =  await web3.eth.getTransactionCount(params.fromPubKey)
-    result.hash = await sendTransaction(params, web3, gasInfo, nonce)
-
-  } else if (params.do === 'createaccount') {
-    result.account = await createAccount(web3)
-
-  } else if (params.do === 'getbalance') {
-    result.balance = await getBalance(params, web3)
-
-  } else if (params.do === 'gettransaction') {
-    result.transaction = await getTransaction(params, web3)
-
-  } else {}
-
-  if(isEmpty(result)) {
-    return undefined
-  } else {
-    return result
-  }
-  
+if (typeof web3 !== 'undefined') {
+  web3 = new Web3(web3.currentProvider)
+} else {
+  web3 = new Web3(new Web3.providers.HttpProvider(mainnet))
 }
 
 function isEmpty(obj) {
@@ -61,7 +30,16 @@ function getGasPrice(web3) {
   })
 }
 
-function sendTransaction(params, web3, gasInfo, nonce) {
+async function sendTransaction(params) {
+  const gasInfo = {}
+  gasInfo.gasLimit = await getGasLimit(web3)
+  gasInfo.gasPrice = await getGasPrice(web3)
+  // private nonce
+  const nonce =  await web3.eth.getTransactionCount(params.fromPubKey)
+  return await sendTransactionAction(params, web3, gasInfo, nonce)
+}
+
+function sendTransactionAction(params, web3, gasInfo, nonce) {
   const fromPubKey = params.fromPubKey
   const fromPriKey = params.fromPriKey.substr(2)
   const toPubKey = params.toPubKey
@@ -99,7 +77,13 @@ function sendTransaction(params, web3, gasInfo, nonce) {
   })
 }
 
-function getTransaction(params, web3) {
+exports.sendTransaction = sendTransaction
+
+async function getTransaction(params) {
+  await getTransactionAction(params, web3)
+}
+
+function getTransactionAction(params, web3) {
   return new Promise((resolve, reject) => {
     web3.eth.getTransaction(params.hash, function(object) {
       resolve(object)
@@ -107,14 +91,28 @@ function getTransaction(params, web3) {
   })
 }
 
-function createAccount(web3) {
+exports.getTransaction = getTransaction
+
+async function createAccount() {
+  return await createAccountAction(web3)
+}
+
+function createAccountAction(web3) {
   return new Promise((resolve, reject) => {
     const account = web3.eth.accounts.create(web3.utils.randomHex(32))
     resolve(account)
   })
 }
 
-function getBalance(params, web3) {
+exports.createAccount = createAccount
+
+async function getBalance(params) {
+  const result = {}
+  result['eth'] = await getBalanceAction(params, web3)
+  return result
+}
+
+function getBalanceAction(params, web3) {
   return new Promise((resolve, reject) => {
     web3.eth.getBalance(params.address, function(err, balance) {
       if (err) {
@@ -127,4 +125,4 @@ function getBalance(params, web3) {
   })
 }
 
-exports.ethereum = ethereum
+exports.getBalance = getBalance
