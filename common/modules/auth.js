@@ -1,3 +1,7 @@
+const privacy = require('../../privacy.json')
+const crypto = require('./crypto')
+
+
 function makeAuthCode() {
     const ALPHABET = 0, NUMBER = 1
     let authCode = ''
@@ -12,9 +16,14 @@ function makeAuthCode() {
             authCode += Math.floor(Math.random() * 10)
         }
     }
-    
+
     return authCode
+}
+
+function encryptPassword(password) {
+    return crypto.hmac('SHA256', privacy.SECRET_KEY, password)
 }
 
 
 exports.makeAuthCode = makeAuthCode
+exports.encryptPassword = encryptPassword
