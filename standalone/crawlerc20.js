@@ -1,10 +1,10 @@
 const fs = require('fs')
-const http = require('../ionia_modules/http')
+const http = require('../common/modules/http')
 const cheerio = require('cheerio')
 const entities = require("entities")
 const host = 'https://etherscan.io'
-const ercContractAddressesPath = '/Users/baekchangmyeong/IONIA-IO-API/erc_contract_address.json'
-const contractAbiPath = '/Users/baekchangmyeong/IONIA-IO-API/erc_abis'
+const ercContractAddressesPath = '/home/arnoldyoo/Documents/ionia/IONIA-IO-API/common/smart_contracts/erc20_address.json'
+const contractAbiPath = '/home/arnoldyoo/Documents/ionia/IONIA-IO-API/common/smart_contracts/erc20'
 
 async function crawl(limit) {
     const page = limit / 50
@@ -22,7 +22,9 @@ async function crawl(limit) {
             const aTag = tokenObject.find('td[class="visible-xs"] > a').eq(0)
 
             const contractCode = aTag.attr('href').split('/')[2]
-            const tokenName = aTag.html().split(' (')[0].toLowerCase()
+            const tokenTemp = aTag.html().split(' (')[1]
+            const tokenName = tokenTemp.split(')')[0].toLowerCase();
+            console.log(tokenName);
 
             const contractAbiCode = await getContractAbiCode(contractCode)
             

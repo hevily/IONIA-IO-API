@@ -73,15 +73,15 @@ async function createAccount(params) {
 }
 
 function createAccountAction(params, kap) {
-return new Promise((resolve, reject) => {
-  kap.exec('getNewAddress', params.account ,function(err, address) {
-    if(err) {
-      reject(err)
-    } else {
-      resolve(address)
-    }
+  return new Promise((resolve, reject) => {
+    kap.exec('getNewAddress', params.account ,function(err, address) {
+      if(err) {
+        reject(err)
+      } else {
+        resolve(address)
+      }
+    })
   })
-})
 }
 
 exports.createAccount = createAccount
