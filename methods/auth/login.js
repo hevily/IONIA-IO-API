@@ -1,14 +1,14 @@
 const jwt = require('jsonwebtoken')
-const passport = require('../../server')
 const privacy = require('../../privacy.json')
 const crypto = require('../../common/modules/crypto')
 const date = require('../../common/modules/date')
+const auth = require('../../common/modules/auth')
 const dao = require('./dao/loginDAO')
 
 
 async function login(ctx, params) {
-    const hashedPassword = crypto.hmac('SHA256', privacy.SECRET_KEY, params.password)
-    const users = await dao.selectUser(params.email, hashedPassword)
+    const encryptedPassword = auth.encryptPassword(params.password)
+    const users = await dao.selectUser(params.email, encryptedPassword)
 
     if(users.length === 0) {
         throw 'User not found'
