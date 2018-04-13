@@ -5,11 +5,11 @@ async function getMarketData(params) {
     const url = 'https://api.coinmarketcap.com/v1/ticker/?limit=1700'
     const markets = await http.request(url)
 
-    const data = {}
+    const data = []
 
     for(const market of markets) {
         const key = market.symbol
-        data[key] = {
+        const currency = {
             id: market.id,
             name: market.name,
             symbol: market.symbol,
@@ -17,6 +17,7 @@ async function getMarketData(params) {
             priceBTC: parseFloat(market.price_btc),
             percentChange24h: parseFloat(market.percent_change_24h)
         }
+        data.push(currency)
     }
 
     return {
