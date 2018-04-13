@@ -1,5 +1,3 @@
-const jwt = require('jsonwebtoken')
-const privacy = require('../../privacy.json')
 const crypto = require('../../common/modules/crypto')
 const date = require('../../common/modules/date')
 const auth = require('../../common/modules/auth')
@@ -20,7 +18,7 @@ async function login(ctx, params) {
     
     const result = {
         loginTime: date.convertDateToString(new Date()),
-        accessToken: jwt.sign({email: params.email}, privacy.SECRET_KEY)
+        accessToken: auth.issueToken({email: params.email})
     }
 
     return result
