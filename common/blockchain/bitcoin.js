@@ -130,7 +130,8 @@ exports.getTransaction = getTransaction
 
 async function getBalance(params) {
   const result = {}
-  result['btc'] = await getBalanceAction(params, kapitalize)
+  result['btc'] = {}
+  result['btc']['balance'] = await getBalanceAction(params, kapitalize)
   return result
 }
 

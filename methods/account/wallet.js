@@ -16,64 +16,158 @@ async function getBalanceWallet(params) {
 
     // return makeResponse(walletResults)
     return {
-      "btc": 0.00125125,
-      "eth": "1.25620000",
-      "eos": "512.05152412",
-      "tether": "0",
-      "tron": "0",
-      "vechain": "0",
-      "binancecoin": "0",
-      "omisego": "0",
-      "populous": "0",
-      "bytom": "7812.90990523",
-      "digixdao": "0",
-      "rchain": "0",
-      "status": "0",
-      "aetemity": "0",
-      "tronix": "0",
-      "bnb": "0",
-      "dgd": "0",
-      "rhoc": "0",
-      "statusnetwork": "0",
-      "aeternity": "0",
-      "maker": "0",
-      "zrx": "0",
-      "zilliqa": "0",
-      "rep": "0",
-      "walton": "0",
-      "veritaseum": "0",
-      "aion": "0",
-      "iostoken": "0",
-      "loopring": "0",
-      "qash": "0",
-      "bat": "0",
-      "dragon": "0",
-      "golem": "0",
-      "nebulas": "0",
-      "ethos": "0",
-      "revain": "0",
-      "funfair": "0",
-      "elf": "0",
-      "kybernetwork": "0",
-      "substratum": "0",
-      "powerledger": "0",
-      "kin": "0",
-      "salt": "0",
-      "dent": "0",
-      "storj": "0",
-      "nucleusvision": "0",
-      "enigma": "0",
-      "dentacoin": "0",
-      "request": "0",
-      "chainlink token": "0",
-      "cindicator": "0",
-      "bancor": "0",
-      "tenxpay": "0",
-      "wax token": "0",
-      "genaro x": "0",
-      "polymath": "0",
-      "credits": "0"
-      }
+      "btc":{
+        "balance": 0
+        },
+        "eth":{
+        "balance": "0"
+        },
+        "eos":{
+        "balance": "0"
+        },
+        "trx":{
+        "balance": "0"
+        },
+        "ven":{
+        "balance": "0"
+        },
+        "bnb":{
+        "balance": "0"
+        },
+        "omg":{
+        "balance": "0"
+        },
+        "icx":{
+        "balance": "0"
+        },
+        "btm":{
+        "balance": "0"
+        },
+        "ppt":{
+        "balance": "0"
+        },
+        "dgd":{
+        "balance": "0"
+        },
+        "rhoc":{
+        "balance": "0"
+        },
+        "mkr":{
+        "balance": "0"
+        },
+        "ae":{
+        "balance": "0"
+        },
+        "zil":{
+        "balance": "0"
+        },
+        "snt":{
+        "balance": "0"
+        },
+        "zrx":{
+        "balance": "0"
+        },
+        "rep":{
+        "balance": "0"
+        },
+        "lrc":{
+        "balance": "0"
+        },
+        "aion":{
+        "balance": "0"
+        },
+        "elf":{
+        "balance": "0"
+        },
+        "iost":{
+        "balance": "0"
+        },
+        "wtc":{
+        "balance": "0"
+        },
+        "gnt":{
+        "balance": "0"
+        },
+        "bat":{
+        "balance": "0"
+        },
+        "cennz":{
+        "balance": "0"
+        },
+        "qash":{
+        "balance": "0"
+        },
+        "veri":{
+        "balance": "0"
+        },
+        "nas":{
+        "balance": "0"
+        },
+        "sub":{
+        "balance": "0"
+        },
+        "drgn":{
+        "balance": "0"
+        },
+        "ethos":{
+        "balance": "0"
+        },
+        "fun":{
+        "balance": "0"
+        },
+        "knc":{
+        "balance": "0"
+        },
+        "r":{
+        "balance": "0"
+        },
+        "salt":{
+        "balance": "0"
+        },
+        "ncash":{
+        "balance": "0"
+        },
+        "link":{
+        "balance": "0"
+        },
+        "powr":{
+        "balance": "0"
+        },
+        "bnt":{
+        "balance": "0"
+        },
+        "eng":{
+        "balance": "0"
+        },
+        "wax":{
+        "balance": "0"
+        },
+        "req":{
+        "balance": "0"
+        },
+        "storj":{
+        "balance": "0"
+        },
+        "dentacoin":{
+        "balance": "0"
+        },
+        "fsn":{
+        "balance": "0"
+        },
+        "pay":{
+        "balance": "0"
+        },
+        "dent":{
+        "balance": "0"
+        },
+        "cnd":{
+        "balance": "0"
+        },
+        "icn":{
+        "balance": "0"
+        }
+    }
+    
 }
 
 function makeResponse(exchangeResults) {

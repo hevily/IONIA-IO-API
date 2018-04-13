@@ -50,7 +50,7 @@ async function getBalanceExchange(params) {
             apiKey: exchange.apiKey,
             secretKey: exchange.apiSecretKey
         }
-
+        
         exchangeFunctions.push(apis[exchange.name].getbalances(requestData))
     }
 

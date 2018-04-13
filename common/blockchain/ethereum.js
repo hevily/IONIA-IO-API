@@ -108,7 +108,8 @@ exports.createAccount = createAccount
 
 async function getBalance(params) {
   const result = {}
-  result['eth'] = await getBalanceAction(params, web3)
+  result['eth'] = {}
+  result['eth']['balance'] = await getBalanceAction(params, web3)
   return result
 }
 

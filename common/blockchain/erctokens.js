@@ -108,12 +108,14 @@ async function getBalance(params) {
   let contractAddress = ''
   let abiArray = ''
   let result = {};
+
   const tokens = Object.keys(ERC20_ADDR)
   for(let i = 0 ; i < tokens.length ; i++) {
     const smartcontractInfo = {};
     smartcontractInfo.abi = await getAbi(tokens[i])
     smartcontractInfo.contractAddress = ERC20_ADDR[tokens[i]]
-    result[tokens[i]] = await getBalanceAction(params, web3, smartcontractInfo.contractAddress, smartcontractInfo.abi)
+    result[tokens[i]] = {}
+    result[tokens[i]]['balance'] = await getBalanceAction(params, web3, smartcontractInfo.contractAddress, smartcontractInfo.abi)
   }
   return result
 }
