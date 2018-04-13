@@ -4,6 +4,7 @@ const EthereumTx = require('ethereumjs-tx')
 const fs = require('fs')
 const path = require('path')
 const ERC20_ADDR = require('../smart_contracts/erc20_address.json')
+const ERC20_CONTRACT = require('../smart_contracts/erc20_contract')
 
 const mainnet = `http://${PRIVACY.BLOCKCHAINS.ETHEREUM.IP}:${PRIVACY.BLOCKCHAINS.ETHEREUM.PORT}`
 let web3
@@ -109,14 +110,24 @@ async function getBalance(params) {
   let abiArray = ''
   let result = {};
 
-  const tokens = Object.keys(ERC20_ADDR)
-  for(let i = 0 ; i < tokens.length ; i++) {
+  if (params.tokenName) {
     const smartcontractInfo = {};
-    smartcontractInfo.abi = await getAbi(tokens[i])
-    smartcontractInfo.contractAddress = ERC20_ADDR[tokens[i]]
-    result[tokens[i]] = {}
-    result[tokens[i]]['balance'] = await getBalanceAction(params, web3, smartcontractInfo.contractAddress, smartcontractInfo.abi)
+    // smartcontractInfo.abi = await getAbi(params.tokenName)
+    smartcontractInfo.abi = ERC20_CONTRACT[params.tokenName]
+    smartcontractInfo.contractAddress = ERC20_ADDR[params.tokenName]
+    result[params.tokenName] = {}
+    result[params.tokenName]['balance'] = await getBalanceAction(params, web3, smartcontractInfo.contractAddress, smartcontractInfo.abi)
+  } else {
+    const tokens = Object.keys(ERC20_ADDR)
+    for(let i = 0 ; i < tokens.length ; i++) {
+      const smartcontractInfo = {};
+      smartcontractInfo.abi = ERC20_CONTRACT[tokens[i]]
+      smartcontractInfo.contractAddress = ERC20_ADDR[tokens[i]]
+      result[tokens[i]] = {}
+      result[tokens[i]]['balance'] = await getBalanceAction(params, web3, smartcontractInfo.contractAddress, smartcontractInfo.abi)
+    }
   }
+
   return result
 }
 
