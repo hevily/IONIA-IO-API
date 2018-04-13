@@ -2,16 +2,16 @@ const knex = require('knex')
 const dao = require('./dao/registerDAO')
 const crypto = require('../../common/modules/crypto')
 const date = require('../../common/modules/date')
-const privacy = require('../../privacy.json')
+const auth = require('../../common/modules/auth')
 const makeAuthCode = require('../../common/modules/auth').makeAuthCode
 const sendVerifyEmailAddressUrl = require('./sendVerifyEmailAddressUrl').sendVerifyEmailAddressUrl
 
 
 async function register(params) {
     const emailAuthCode = makeAuthCode()
-    const hashedPassword = crypto.hmac('SHA256', privacy.SECRET_KEY, params.password)
+    const encryptedPassword = auth.encryptPassword(params.password)
 
-    const isInserted = await dao.insertUser(params.email, hashedPassword)
+    const isInserted = await dao.insertUser(params.email, encryptedPassword)
 
     if(isInserted === false) {
         throw 'Error to create user'
@@ -22,7 +22,7 @@ async function register(params) {
     sendVerifyEmailAddressUrl(params)
 
     return {
-        registeredTime: createdTime
+        registeredTime: date.convertDateToString(createdTime)
     }
 }
 
