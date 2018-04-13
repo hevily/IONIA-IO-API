@@ -2,7 +2,7 @@ const http = require('../../common/modules/http')
 
 
 async function getMarketData(params) {
-    const url = 'https://api.coinmarketcap.com/v1/ticker/'
+    const url = 'https://api.coinmarketcap.com/v1/ticker/?limit=10000'
     const markets = await http.request(url)
 
     const data = {}
