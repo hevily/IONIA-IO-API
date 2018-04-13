@@ -18,7 +18,7 @@ async function login(params) {
     
     const result = {
         loginTime: date.convertDateToString(new Date()),
-        accessToken: auth.issueToken({email: params.email})
+        accessToken: auth.issueToken(users[0])
     }
 
     return result
