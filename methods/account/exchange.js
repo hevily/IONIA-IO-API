@@ -56,15 +56,15 @@ function makeResponse(exchangeResults) {
         }
     }
 
-    const data = []
+    const result = {}
 
     for(const currencyName in currencies) {
-        const currencyObject = {}
-        currencyObject[currencyName] = currencies[currencyName]
-        data.push(currencyObject)
+        // const currencyObject = {}
+        result[currencyName] = currencies[currencyName]
+        // data.push(currencyObject)
     }
 
-    return { data: data }
+    return result
 }
 
 exports.getBalanceExchange = getBalanceExchange
