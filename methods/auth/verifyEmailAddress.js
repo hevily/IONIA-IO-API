@@ -11,6 +11,10 @@ async function verifyEmailAddress(params) {
 
     const isUpdated = await dao.updateUserStatus(params.email)
 
+    if(!isUpdated) {
+        throw 'Failed update user status'
+    }
+
     return {
         emailAuthTime: date.convertDateToString(new Date())
     }
