@@ -5,7 +5,8 @@ async function selectUser(email, password) {
     const rows = await db('usUserMaster')
     .select(['id', 'email', 'userStatus', 'createdTime', 'updatedTime'])
     .where({
-        email: email
+        email: email,
+        password: password
     })
 
     return rows
