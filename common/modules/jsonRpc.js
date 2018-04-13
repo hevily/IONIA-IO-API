@@ -45,12 +45,7 @@ class JsonRpc {
                     })
                 }
 
-                if(['auth_login', 'auth_logout'].indexOf(requestBody.method) > -1) {
-                    response.result = await method(ctx, requestBody.params)
-                }
-                else {
-                    response.result = await method(requestBody.params)
-                }
+                response.result = await method(requestBody.params)
 
                 if(response.result === undefined) {
                     response.result = null

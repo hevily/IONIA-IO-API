@@ -4,7 +4,7 @@ const auth = require('../../common/modules/auth')
 const dao = require('./dao/loginDAO')
 
 
-async function login(ctx, params) {
+async function login(params) {
     const encryptedPassword = auth.encryptPassword(params.password)
     const users = await dao.selectUser(params.email, encryptedPassword)
 
