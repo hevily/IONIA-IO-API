@@ -20,25 +20,6 @@ async function getAddressExchange(params) {
     return makeResponse(exchangeResults)
 }
 
-function makeResponse(exchangeResults) {
-    const response = {}
-
-    for(let i = 0 ; i < exchangeResults.length ; i++) {
-        const exchangeName = Object.keys(exchangeResults[i])[0]
-        const exchange = exchangeResults[i][exchangeName]
-
-        for(const tokenName in exchange) {
-            if(response[tokenName] === undefined) {
-                response[tokenName] = {}
-            }
-            
-            response[tokenName][exchangeName] = exchange[tokenName]
-        }
-    }
-
-    return response
-}
-
 exports.getAddressExchange = getAddressExchange
 
 async function getBalanceExchange(params) {
@@ -60,22 +41,30 @@ async function getBalanceExchange(params) {
 }
 
 function makeResponse(exchangeResults) {
-    const response = {}
+    const currencies = {}
 
     for(let i = 0 ; i < exchangeResults.length ; i++) {
         const exchangeName = Object.keys(exchangeResults[i])[0]
         const exchange = exchangeResults[i][exchangeName]
 
         for(const tokenName in exchange) {
-            if(response[tokenName] === undefined) {
-                response[tokenName] = {}
+            if(currencies[tokenName] === undefined) {
+                currencies[tokenName] = {}
             }
             
-            response[tokenName][exchangeName] = exchange[tokenName]
+            currencies[tokenName][exchangeName] = exchange[tokenName]
         }
     }
 
-    return response
+    const data = []
+
+    for(const currencyName in currencies) {
+        const currencyObject = {}
+        currencyObject[currencyName] = currencies[currencyName]
+        data.push(currencyObject)
+    }
+
+    return { data: data }
 }
 
 exports.getBalanceExchange = getBalanceExchange

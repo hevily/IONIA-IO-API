@@ -2,30 +2,24 @@ const koa = require('koa')
 const bodyParser = require('koa-bodyparser')
 const cors = require('@koa/cors')
 const fs    = require('fs')
-const passport = require('koa-passport')
-const session = require('koa-session')
 const finder = require('fs-finder')
 const jsonRpc = require('./common/modules/jsonRpc')
 const privacy = require('./privacy.json')
 const db = require('./common/modules/db')
 
 const app = new koa()
-require('./common/modules/auth')
-app.keys = [privacy.SECRET_KEY]
-app.use(session({}, app))
-app.use(passport.initialize())
-app.use(passport.session())
 
 app.use(bodyParser({
     extendTypes: {
         json: ['application/json-rpc']
-      }
+    }
 }))
 
 app.use(cors())
 
+const authServices = ['account_getAddressExchange']
+
 // bind methods
-module.exports = passport
 const methodDirectories = finder.in('./methods').findDirectories()
 
 for(const methodDirectory of methodDirectories) {
@@ -43,7 +37,7 @@ for(const methodDirectory of methodDirectories) {
     }
 }
 
-app.use(jsonRpc.app())
+app.use(jsonRpc.app(authServices))
 
 const PORT = 3000
 app.listen(PORT)

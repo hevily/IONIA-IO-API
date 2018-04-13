@@ -1,4 +1,7 @@
 const jsonRpcError = require('./jsonRpcError')
+const jwt = require('jsonwebtoken')
+const privacy = require('../../privacy.json')
+
 
 class JsonRpc {
     constructor() {
@@ -9,7 +12,7 @@ class JsonRpc {
         this.methods[methodName] = func
     }
 
-    app() {
+    app(authServices) {
         return async (ctx, next) => {
             const contentType = ctx.request.header['content-type'].toLowerCase()
             const requestBody = ctx.request.body
@@ -34,7 +37,15 @@ class JsonRpc {
             }
 
             try {
-                if(['register', 'login', 'logout'].indexOf(requestBody.method) > -1) {
+                if(authServices.indexOf(requestBody.method) > -1) {
+                    jwt.verify(ctx.request.header['x-access-token'], privacy.SECRET_KEY, (error, decoded) => {
+                        if(error) {
+                            throw 'You must be certified.'
+                        }
+                    })
+                }
+
+                if(['auth_login', 'auth_logout'].indexOf(requestBody.method) > -1) {
                     response.result = await method(ctx, requestBody.params)
                 }
                 else {
