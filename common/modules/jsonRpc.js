@@ -42,10 +42,8 @@ class JsonRpc {
                         if(error) {
                             throw 'You must be certified.'
                         }
-
-                        for(const key in decoded) {
-                            requestBody.params[key] = decoded[key]
-                        }
+                        
+                        requestBody.params.userInfo = decoded
                     })
                 }
 

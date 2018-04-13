@@ -1,16 +1,16 @@
 const db = require('../../../common/modules/db')
 
 
-async function isValidUser(email) {
+async function selectUser(email) {
     const rows = await db('usUserMaster')
-    .select(['userStatus'])
+    .select(['email', 'userStatus'])
     .where({
         email: email,
         userStatus: 'VERIFIED'
     })
 
-    return rows.length > 0
+    return rows
 }
 
 
-exports.isValidUser = isValidUser
+exports.selectUser = selectUser
