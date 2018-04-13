@@ -13,13 +13,15 @@ async function selectUser(email, password) {
 }
 
 async function updatePassword(email, newPassword) {
-    const rows = await db('usUserMaster')
+    const updateRowCount = await db('usUserMaster')
     .update({
         password: newPassword
     })
     .where({
         email: email
     })
+
+    return updateRowCount > 0
 }
 
 

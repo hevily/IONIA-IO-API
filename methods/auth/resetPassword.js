@@ -3,10 +3,14 @@ const auth = require('../../common/modules/auth')
 
 
 async function resetPassword(params) {
-    const isUpdated = await dao.updatePassword(params.email, auth.encryptPassword(params.password))
+    const isUpdated = await dao.updatePassword(params.userInfo.email, auth.encryptPassword(params.userInfo.password))
+
+    if(!isUpdated) {
+        throw 'Failed update password'
+    }
 
     return {
-        email: params.email
+        email: params.userInfo.email
     }
 }
 
