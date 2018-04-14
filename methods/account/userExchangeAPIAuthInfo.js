@@ -7,21 +7,27 @@ async function insertUserExchangeAPIAuthInfo(params) {
         params.exchanges[i].exchangeAuthName = params.exchanges[i].exchangeName
     }
 
-    const isInserted = await dao.insertUserExchangeAuth(params.userInfo, params.exchanges)
+    const isInserted = await dao.insertUserExchangeAuth(params.exchanges)
 
-    return isInserted
+    return {
+        success: isInserted
+    }
 }
 
 async function updateUserExchangeAPIAuthInfo(params) {
-    // const isUpdated = await dao.updateUserExchangeAuth(params.userInfo)
+    const isUpdated = await dao.updateUserExchangeAuth(params.userInfo, params.exchanges)
 
-    // return isUpdated
+    return {
+        success: isUpdated
+    }
 }
 
 async function deleteUserExchangeAPIAuthInfo(params) {
-    // const isDeleted = await dao.deleteUserExchangeAuth(params.userInfo)
+    const isDeleted = await dao.deleteUserExchangeAuth(params.userInfo.id, params.exchanges)
 
-    // return isDeleted
+    return {
+        success: isDeleted
+    }
 }
 
 async function getUserExchangeAPIAuthInfo(params) {
