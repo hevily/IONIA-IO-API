@@ -63,7 +63,7 @@ async function sendTransaction(params) {
   gasInfo.gasPrice = await getGasPrice(web3)
   const nonce = await web3.eth.getTransactionCount(params.address)
 
-  return await sendTransaction(params, web3, gasInfo, nonce, smartcontractInfo.contractAddress, smartcontractInfo.abi)
+  return await sendTransactionAction(params, web3, gasInfo, nonce, smartcontractInfo.contractAddress, smartcontractInfo.abi)
 }
 
 function sendTransactionAction(params, web3, gasInfo, nonce, contractAddress, abiArray) {
