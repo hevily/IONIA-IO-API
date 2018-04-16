@@ -18,7 +18,8 @@ app.use(bodyParser({
 app.use(cors())
 
 const authServices = ['account_getAddressExchange', 'auth_resetPassword', 'account_insertUserExchangeAPIAuthInfo',
-                      'account_getUserExchangeAPIAuthInfo', 'account_updateUserExchangeAPIAuthInfo', 'account_deleteUserExchangeAPIAuthInfo']
+                      'account_getUserExchangeAPIAuthInfo', 'account_updateUserExchangeAPIAuthInfo', 'account_deleteUserExchangeAPIAuthInfo',
+                      'account_getBalanceWallet', 'account_createWallet']
 
 // bind methods
 const methodDirectories = finder.in('./methods').findDirectories()

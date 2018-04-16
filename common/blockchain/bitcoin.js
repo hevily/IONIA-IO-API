@@ -47,11 +47,10 @@ function getDumpPrivateKey(address, kap) {
   })
 }
 
-function importPrivateKey(params, privkey, kap) {
+function importPrivateKey(privkey, kap) {
   return new Promise((resolve, reject) => {
-    kap.exec('importprivkey', privkey, params.account, function(err, result) {
+    kap.exec('importprivkey', privkey, function(err, result) {
       if(err) {
-        console.log(err)
         reject(err)
       } else {
         resolve(result)
@@ -62,19 +61,19 @@ function importPrivateKey(params, privkey, kap) {
 
 
 async function createAccount(params) {
-  let result = {}
-  result.account = {}
-  result.account.address = await createAccount(params, kapitalize)
+  const result = {}
+  result.currency = 'bitcoin'
+  result.address = await createAccountAction(kapitalize)
   await unlockWallet(PRIVACY.BLOCKCHAINS.BITCOIN.WALLETPASSWD, kapitalize)
-  result.account.privkey = await getDumpPrivateKey(result.account.address, kapitalize)
-  await importPrivateKey(params, result.account.privkey, kapitalize)
+  result.privateKey = await getDumpPrivateKey(result.address, kapitalize)
+  await importPrivateKey(result.privateKey, kapitalize)
   await lockWallet(kapitalize)
   return result
 }
 
-function createAccountAction(params, kap) {
+function createAccountAction(kap) {
   return new Promise((resolve, reject) => {
-    kap.exec('getNewAddress', params.account ,function(err, address) {
+    kap.exec('getNewAddress', function(err, address) {
       if(err) {
         reject(err)
       } else {
@@ -128,16 +127,16 @@ function getTransactionAction(params, kap) {
 
 exports.getTransaction = getTransaction
 
-async function getBalance(params) {
+async function getBalance(address) {
   const result = {}
-  result['btc'] = {}
-  result['btc']['balance'] = await getBalanceAction(params, kapitalize)
+  result.currency = 'bitcoin'
+  result.balance = parseFloat(await getBalanceAction(address, kapitalize))
   return result
 }
 
-function getBalanceAction(params, kap) {
+function getBalanceAction(address, kap) {
   return new Promise((resolve, reject) => {
-    kap.exec('getbalance', params.account, function(err, result) {
+    kap.exec('getbalance', address, function(err, result) {
       if(err) {
         reject(err)
       } else {
