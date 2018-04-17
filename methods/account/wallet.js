@@ -33,7 +33,7 @@ async function getBalanceWallet(params) {
 }
 
 async function createWallet(params) {
-    if(params.currencies === null || params.currencies.length === 0) {
+    if(params.currencies === undefined || params.currencies.length === 0) {
         params.currencies = Object.keys(blockchain)
     }
     
