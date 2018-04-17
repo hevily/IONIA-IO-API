@@ -100,8 +100,10 @@ async function createAccount() {
 function createAccountAction(web3) {
   return new Promise((resolve, reject) => {
     const result = {}
+    const account = web3.eth.accounts.create(web3.utils.randomHex(32))
     result.ethereum = {
-      address: web3.eth.accounts.create(web3.utils.randomHex(32))
+      address: account.address,
+      privateKey: account.privateKey
     }
     resolve(result)
   })
