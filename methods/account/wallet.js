@@ -60,8 +60,6 @@ async function createWallet(params) {
     }
 }
 
-exports.getBalanceWallet = getBalanceWallet
-
 async function contractInfo(params) {
   const result = {}
   result.abi = ERC20_CONTRACT[params.tokenName]
