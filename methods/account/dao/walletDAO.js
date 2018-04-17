@@ -15,7 +15,7 @@ async function insertUserWallet(userId, walletInfo) {
     const insertedCount = await db('usUserWallet')
     .insert({
         userId: userId,
-        currency: walletInfo.currency,
+        currency: Object.keys(walletInfo)[0],
         address: walletInfo.address
     })
 

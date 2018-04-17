@@ -62,11 +62,11 @@ function importPrivateKey(privkey, kap) {
 
 async function createAccount(params) {
   const result = {}
-  result.currency = 'bitcoin'
-  result.address = await createAccountAction(kapitalize)
+  result.bitcoin = {}
+  result.bitcoin.address = await createAccountAction(kapitalize)
   await unlockWallet(PRIVACY.BLOCKCHAINS.BITCOIN.WALLETPASSWD, kapitalize)
-  result.privateKey = await getDumpPrivateKey(result.address, kapitalize)
-  await importPrivateKey(result.privateKey, kapitalize)
+  result.bitcoin.privateKey = await getDumpPrivateKey(result.bitcoin.address, kapitalize)
+  await importPrivateKey(result.bitcoin.privateKey, kapitalize)
   await lockWallet(kapitalize)
   return result
 }
@@ -129,8 +129,8 @@ exports.getTransaction = getTransaction
 
 async function getBalance(address) {
   const result = {}
-  result.currency = 'bitcoin'
-  result.balance = parseFloat(await getBalanceAction(address, kapitalize))
+  result.bitcoin = {}
+  result.bitcoin.balance = parseFloat(await getBalanceAction(address, kapitalize))
   return result
 }
 
