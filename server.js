@@ -25,7 +25,7 @@ const authServices = ['account_getAddressExchange', 'auth_resetPassword', 'accou
 const methodDirectories = finder.in('./methods').findDirectories()
 
 for(const methodDirectory of methodDirectories) {
-    const splitedPath = methodDirectory.split('/')
+    const splitedPath = methodDirectory.split(/\/|\\/)
     const prefix = splitedPath[splitedPath.length - 1]
     const files = finder.in(methodDirectory).findFiles()
 
