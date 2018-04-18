@@ -77,9 +77,13 @@ async function createAccount() {
 
 function createAccountAction(web3) {
   return new Promise((resolve, reject) => {
+    const result = {}
     const account = web3.eth.accounts.create(web3.utils.randomHex(32))
-    account.currency = 'ethereum'
-    resolve(account)
+    result.ethereum = {
+      address: account.address,
+      privateKey: account.privateKey
+    }
+    resolve(result)
   })
 }
 
@@ -87,8 +91,8 @@ exports.createAccount = createAccount
 
 async function getBalance(address) {
   const result = {}
-  result.currency = 'ethereum'
-  result.balance = parseFloat(await getBalanceAction(address, web3))
+  result.ethereum = {}
+  result.ethereum.balance = parseFloat(await getBalanceAction(address, web3))
   return result
 }
 

@@ -5,7 +5,7 @@ const ERC20_CONTRACT = require('./../../common/smart_contracts/erc20_contract')
 const dao = require('./dao/walletDAO')
 
 async function getBalanceWallet(params) {
-    // if(params.currencies === null || params.currencies.length === 0) {
+    // if(params.currencies === undefined || params.currencies.length === 0) {
     //     params.currencies = Object.keys(blockchain)
     // }
 
@@ -27,10 +27,7 @@ async function getBalanceWallet(params) {
 
     // const results = await Promise.all(blockchainFunctions)
 
-    // return {
-    //     data: results
-    // }
-        // return makeResponse(walletResults)
+    // return Object.assign({}, ...results)
         return {
             "btc":{
               "balance": 0
@@ -183,11 +180,10 @@ async function getBalanceWallet(params) {
               "balance": "0"
               }
             }
-      
 }
 
 async function createWallet(params) {
-    if(params.currencies === null || params.currencies.length === 0) {
+    if(params.currencies === undefined || params.currencies.length === 0) {
         params.currencies = Object.keys(blockchain)
     }
     
@@ -198,23 +194,14 @@ async function createWallet(params) {
     }
 
     const wallets = await Promise.all(blockchainFunctions)
-    
-    const data = []
 
     for(const wallet of wallets) {
         const isInserted = await dao.insertUserWallet(params.userInfo.id, wallet)
-
-        if(isInserted) {
-            data.push(wallet)
-        }
+        // do something
     }
 
-    return {
-        data: data
-    }
+    return Object.assign({}, ...wallets)
 }
-
-exports.getBalanceWallet = getBalanceWallet
 
 async function contractInfo(params) {
   const result = {}
