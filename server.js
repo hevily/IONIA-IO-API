@@ -39,7 +39,7 @@ for(const methodDirectory of methodDirectories) {
     }
 }
 
-app.use(jsonRpc.app(authServices))
+app.use(jsonRpc.app([]))
 
 const PORT = 3000
 app.listen(PORT)

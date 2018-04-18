@@ -2,12 +2,13 @@ const PRIVACY = require('./../../privacy.json')
 const Web3 = require('web3')
 const EthereumTx = require('ethereumjs-tx')
 const mainnet = `http://${PRIVACY.BLOCKCHAINS.ETHEREUM.IP}:${PRIVACY.BLOCKCHAINS.ETHEREUM.PORT}`
+const testnet = `https://ropsten.infura.io/RJk9FLrQ2hTCdb1NKd3n`
 let web3
 
 if (typeof web3 !== 'undefined') {
   web3 = new Web3(web3.currentProvider)
 } else {
-  web3 = new Web3(new Web3.providers.HttpProvider(mainnet))
+  web3 = new Web3(new Web3.providers.HttpProvider(testnet))
 }
 
 function isEmpty(obj) {
@@ -31,51 +32,28 @@ function getGasPrice(web3) {
 }
 
 async function sendTransaction(params) {
-  const gasInfo = {}
-  gasInfo.gasLimit = await getGasLimit(web3)
-  gasInfo.gasPrice = await getGasPrice(web3)
-  // private nonce
-  const nonce =  await web3.eth.getTransactionCount(params.fromPubKey)
-  return await sendTransactionAction(params, web3, gasInfo, nonce)
+  try {
+    return await sendTransactionAction(params, web3)
+  } catch(err) { 
+    return err
+  }
 }
 
-function sendTransactionAction(params, web3, gasInfo, nonce) {
-  const fromPubKey = params.fromPubKey
-  const fromPriKey = params.fromPriKey.substr(2)
-  const toPubKey = params.toPubKey
-  const privateKey = Buffer.from(fromPriKey, 'hex')
-  const nonceHex = web3.utils.toHex(nonce)
-  const gasLimit = web3.utils.toHex(gasInfo.gasLimit)
-  const gasPrice = web3.utils.toHex(gasInfo.gasPrice)
-  const value = web3.utils.toHex(web3.utils.toWei(params.value))
-  const data = web3.utils.toHex(params.data)
-  const chainid = 1;
-
-  const txParams = {
-    nonce: nonceHex,
-    gasPrice: gasPrice, 
-    gasLimit: gasLimit,
-    to: toPubKey, 
-    value: value,
-    data: data,
-    chainId: 1
-  }
-
-  const tx = new EthereumTx(txParams)
-  tx.sign(privateKey)
-  const serializedTx = tx.serialize()
-
+function sendTransactionAction(params, web3) {
+  console.log(params.signedTransaction)
   return new Promise((resolve, reject) => {
-    web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'), function(err, hash) {                
-      if (err) {
-        console.log(err)
-        reject(err)
-      } else {
-        resolve(hash)
-      }
+    web3.eth.sendSignedTransaction(params.signedTransaction, function(err, hash) {                
+        if (!err){
+          resolve(hash)
+        }
+        else {
+          console.log('err : ', err)
+          reject(err)
+        }
     })
   })
 }
+
 
 exports.sendTransaction = sendTransaction
 

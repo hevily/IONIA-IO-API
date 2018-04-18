@@ -1,8 +1,7 @@
 const blockchain = require('../../common/blockchain')
 
 async function transfer(params) {
-  const sendHash = await blockchain[params.currency].sendTransaction(params)
-  return sendHash
+  return await blockchain[params.currency].sendTransaction(params)
 }
 
 exports.transfer = transfer

@@ -7,12 +7,13 @@ const ERC20_ADDR = require('../smart_contracts/erc20_address.json')
 const ERC20_CONTRACT = require('../smart_contracts/erc20_contract')
 
 const mainnet = `http://${PRIVACY.BLOCKCHAINS.ETHEREUM.IP}:${PRIVACY.BLOCKCHAINS.ETHEREUM.PORT}`
+const testnet = `https://ropsten.infura.io/RJk9FLrQ2hTCdb1NKd3n`
 let web3
 
 if (typeof web3 !== 'undefined') {
   web3 = new Web3(web3.currentProvider)
 } else {
-  web3 = new Web3(new Web3.providers.HttpProvider(mainnet))
+  web3 = new Web3(new Web3.providers.HttpProvider(testnet))
 }
 
 
@@ -54,53 +55,25 @@ function getGasPrice(web3) {
 // }
 
 async function sendTransaction(params) {
-  const smartcontractInfo = {}
-  smartcontractInfo.abi = await getAbi(params.tokenName)
-  smartcontractInfo.contractAddress = getContractAddress(params.tokenName)
-
-  const gasInfo = {}
-  gasInfo.gasLimit = await getGasLimit(web3)
-  gasInfo.gasPrice = await getGasPrice(web3)
-  const nonce = await web3.eth.getTransactionCount(params.address)
-
-  return await sendTransactionAction(params, web3, gasInfo, nonce, smartcontractInfo.contractAddress, smartcontractInfo.abi)
+  try {
+    return await sendTransactionAction(params, web3)
+  } catch(err) { 
+    return err
+  }
 }
 
-function sendTransactionAction(params, web3, gasInfo, nonce, contractAddress, abiArray) {
-
+function sendTransactionAction(params, web3) {
   return new Promise((resolve, reject) => {
-    const privateKey = new Buffer(params.fromprivKey.substr(2), 'hex')
-    const value = web3.utils.toHex(web3.utils.toWei(params.amount))
-    const contract = new web3.eth.Contract(abiArray, contractAddress, {
-        from: params.address
-    })
-    const chainId = 1
-    const rawTransaction = {
-        from: params.address,
-        nonce: web3.utils.toHex(nonce),
-        gasPrice: web3.utils.toHex(gasInfo.gasPrice),
-        gasLimit: web3.utils.toHex(gasInfo.gasLimit),
-        to: contractAddress,
-        value: "0x0",
-        data: contract.methods.transfer(params.topubKey, 1).encodeABI(),
-        chainId: chainId
-    }
-  
-    const tx = new EthereumTx(rawTransaction)
-    tx.sign(privateKey)
-    const serializedTx = tx.serialize()
-    
-    web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'), function(err, hash) {                
+    web3.eth.sendSignedTransaction(params.signedTransaction, function(err, hash) {                
         if (!err){
           resolve(hash)
         }
         else {
-          console.log(err)
+          console.log('err erc : ',  err)
           reject(err)
         }
     })
   })
-
 }
 
 exports.sendTransaction = sendTransaction
